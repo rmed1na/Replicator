@@ -17,6 +17,7 @@ namespace Setup
             distributor.DebugMode = true;
             publisher.DebugMode = true;
             string option = null;
+            const string dbname = "UTP";
 
             Menu(ref option);
             Console.Clear();
@@ -28,23 +29,11 @@ namespace Setup
                     if (ConfigureDistributor(ref distributor, ref publisher))
                         if (ConfigurePublisher(ref publisher, ref distributor))
                         {
-                            publisher.Database = "UTP";
+                            publisher.Database = dbname;
                             if (SetupDatabaseForReplication(publisher))
                                 if (CreatePublication(publisher))
                                 {
                                     string answer;
-                                    do
-                                    {
-                                        Console.Write("Add subscription(s)? (yes/no) (y/n) ");
-                                        answer = Console.ReadLine();
-
-                                        if (answer.ToUpper() == "YES" || answer.ToUpper() == "Y")
-                                            AddSubscription(publisher);
-
-                                    } while (answer.ToUpper() == "YES" || answer.ToUpper() == "Y");
-
-                                    Console.WriteLine();
-
                                     do
                                     {
                                         Console.Write("Add article(s)? (yes/no) (y/n) ");
@@ -54,6 +43,21 @@ namespace Setup
                                             AddArticle(publisher);
 
                                     } while (answer.ToUpper() == "Y" || answer.ToUpper() == "YES");
+
+                                    Console.WriteLine();
+
+                                    do
+                                    {
+                                        Console.Write("\r\nAdd subscription(s)? (yes/no) (y/n) ");
+                                        answer = Console.ReadLine();
+
+                                        if (answer.ToUpper() == "YES" || answer.ToUpper() == "Y")
+                                            AddSubscription(publisher);
+
+                                    } while (answer.ToUpper() == "YES" || answer.ToUpper() == "Y");
+
+                                    Console.WriteLine();
+                                    SetupPublisherLogReaderAgent(publisher);
                                 }
                         }
                             
@@ -184,14 +188,6 @@ namespace Setup
                 else
                     Console.WriteLine("Done");
 
-                Console.Write("Setting up log reader agent security mode... ");
-                if (!publisher.WriteData(query.Publisher.SetLogReaderAgent
-                    .Replace("$user$", publisher.User)
-                    .Replace("$password$", publisher.Password)))
-                    success = false;
-                else
-                    Console.WriteLine("Done");
-
                 if (success) return true; else return false;
             }
             catch (Exception ex)
@@ -208,10 +204,10 @@ namespace Setup
                 Console.Write("\r\nSetting up database for replication... ");
                 if (!publisher.WriteData(query.Publisher.DatabaseReplOption.Replace("$Database$", publisher.Database)))
                     success = false;
-                Console.WriteLine("Done");
+                else
+                    Console.WriteLine("Done");
 
-                if (success) return true;
-                else return false;
+                if (success) return true; else return false;
             }
             catch (Exception ex)
             {
@@ -311,6 +307,28 @@ namespace Setup
                     if (success) return true; return false;
                 }
                 return true;
+            }
+            catch (Exception ex)
+            {
+                return false;
+            }
+        }
+        static bool SetupPublisherLogReaderAgent(MSSQLServer publisher)
+        {
+            Query query = new Query();
+            bool success = true;
+            try
+            {
+                Console.Write("Setting up log reader agent security context... ");
+                publisher.SetConnection();
+                if (!publisher.WriteData(query.Publisher.SetLogReaderAgent
+                    .Replace("$user$", publisher.User)
+                    .Replace("$password$", publisher.Password)))
+                    success = false;
+                else
+                    Console.WriteLine("Done");
+
+                if (success) return true; else return false;
             }
             catch (Exception ex)
             {
