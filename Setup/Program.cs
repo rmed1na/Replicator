@@ -54,7 +54,7 @@ namespace Setup
                                         answer = Console.ReadLine();
 
                                         if (answer.ToUpper() == "YES" || answer.ToUpper() == "Y")
-                                            AddSubscription(publisher);
+                                            AddSubscription(publisher, distributor);
 
                                     } while (answer.ToUpper() == "YES" || answer.ToUpper() == "Y");   
                                 }
@@ -140,21 +140,24 @@ namespace Setup
                         success = false;
                     Console.WriteLine("Done");
 
-                    //Add publisher to distributor
-                    Console.Write("Adding publisher on distributor... ");
-                    if (publisher.SetConnection())
-                    {
-                        var publisherHostname = publisher.GetData("SELECT @@SERVERNAME").Rows[0][0].ToString();
-                        var sql = query.Distributor.AddPublisher.Replace("$HostName$", publisherHostname).Replace("$DistributionDbName$", distributor.Database);
-                        if (!distributor.WriteData(sql))
-                            success = false;
-                        Console.WriteLine("Done");
-                    }
-                    else
-                    {
+                    ////Add publisher to distributor
+                    //Console.Write("Adding publisher on distributor... ");
+                    //if (publisher.SetConnection())
+                    //{
+                    //    var publisherHostname = publisher.GetData("SELECT @@SERVERNAME").Rows[0][0].ToString();
+                    //    var sql = query.Distributor.AddPublisher.Replace("$HostName$", publisherHostname).Replace("$DistributionDbName$", distributor.Database);
+                    //    if (!distributor.WriteData(sql))
+                    //        success = false;
+                    //    Console.WriteLine("Done");
+                    //}
+                    //else
+                    //{
+                    //    success = false;
+                    //    Console.WriteLine($"(ERROR) Could not connect to publisher");
+                    //}
+
+                    if (!AddDistributorPublisher(distributor, publisher))
                         success = false;
-                        Console.WriteLine($"(ERROR) Could not connect to publisher");
-                    }
                 }
                 else
                 {
@@ -262,7 +265,7 @@ namespace Setup
                 return false;
             }
         }
-        static bool AddSubscription(MSSQLServer publisher)
+        static bool AddSubscription(MSSQLServer publisher, MSSQLServer distributor)
         {
             bool success = true;
             MSSQLServer subscriber  = new MSSQLServer();
@@ -303,11 +306,18 @@ namespace Setup
                     else
                         Console.WriteLine("Done");
 
+                    Console.Write("\r\nSetup birectional replication for this subscriber? (yes/no) (y/n) ");
+                    var answer = Console.ReadLine();
+
+                    if (answer.ToUpper() == "YES" || answer.ToUpper() == "Y")
+                    {
+
+                    }
                 }
                 else
                 {
                     success = false;
-                    Console.WriteLine("Could not connect to subscriber. Verify credentials");
+                    Console.WriteLine("(ERROR) Could not connect to subscriber. Verify credentials");
                 }
 
 
@@ -332,6 +342,36 @@ namespace Setup
                     success = false;
                 else
                     Console.WriteLine("Done");
+
+                if (success) return true; else return false;
+            }
+            catch (Exception ex)
+            {
+                return false;
+            }
+        }
+        static bool AddDistributorPublisher(MSSQLServer distributor, MSSQLServer publisher)
+        {
+            bool success = true;
+            Query query = new Query();
+            try
+            {
+                //Add publisher to distributor
+                Console.Write("Adding publisher on distributor... ");
+                if (publisher.SetConnection())
+                {
+                    var publisherHostname = publisher.GetData("SELECT @@SERVERNAME").Rows[0][0].ToString();
+                    var sql = query.Distributor.AddPublisher.Replace("$HostName$", publisherHostname).Replace("$DistributionDbName$", distributor.Database);
+                    if (!distributor.WriteData(sql))
+                        success = false;
+                    else
+                        Console.WriteLine("Done");
+                }
+                else
+                {
+                    success = false;
+                    Console.WriteLine($"(ERROR) Could not connect to publisher");
+                }
 
                 if (success) return true; else return false;
             }
