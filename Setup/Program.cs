@@ -32,14 +32,16 @@ namespace Setup
                             if (SetupDatabaseForReplication(publisher))
                                 if (CreatePublication(publisher))
                                 {
+                                    string answer;
                                     do
                                     {
                                         Console.WriteLine("Add article(s)?");
+                                        answer = Console.ReadLine();
                                         AddArticle(publisher);
-                                    } while (Console.ReadLine() == "Y" || Console.ReadLine() == "y" || Console.ReadLine().ToUpper() == "YES");
+                                    } while (answer == "Y" || answer == "y" || answer.ToUpper() == "YES");
                                 }
                         }
-                            
+
                     break;
                 default:
                     Print($"Selected option is not on the list ({option})", log);
@@ -217,19 +219,25 @@ namespace Setup
         }
         static bool AddArticle(MSSQLServer publisher)
         {
+            Query query = new Query();
+            bool success = true;
             try
             {
-                Console.Write("Article name?");
+                Console.Write("Article name? ");
                 var article = Console.ReadLine();
 
                 if (publisher.GetData($"SELECT * FROM sys.tables WHERE name = NULLIF('{article}','')").Rows.Count > 0)
                 {
-                    Console.Write($"Article existence validated... Adding it to this database publication (Db: {publisher.Database})");
-
-                    Console.WriteLine("Done");
+                    Console.Write($"Article existence validated... Adding it to this database publication (Db: {publisher.Database})... ");
+                    if (publisher.WriteData(query.Publisher.AddArticle.Replace("$article$", article).Replace("$database$", publisher.Database)))
+                    {
+                        Console.WriteLine("Done");
+                    }
+                    else
+                        success = false;
                 }
 
-                return true;
+                if (success) return true; else return false;
             }
             catch (Exception ex)
             {
