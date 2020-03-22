@@ -171,20 +171,28 @@ namespace Setup
         }
         static bool ConfigurePublisher(ref MSSQLServer publisher, ref MSSQLServer distributor)
         {
+            bool success = true;
             Query query = new Query();
             try
             {
                 Console.Write("Setting up publisher... ");
                 var distributorHostName = distributor.GetData("SELECT @@SERVERNAME").Rows[0][0].ToString();
-                if (publisher.WriteData(query.Publisher.AddDistributor
+                if (!publisher.WriteData(query.Publisher.AddDistributor
                     .Replace("$DistributorHostName$", distributorHostName)
                     .Replace("$Password$", publisher.Password)))
-                {
-                    Console.WriteLine("Done");
-                    return true;
-                }
+                    success = false;
                 else
-                    return false;
+                    Console.WriteLine("Done");
+
+                Console.Write("Setting up log reader agent security mode... ");
+                if (!publisher.WriteData(query.Publisher.SetLogReaderAgent
+                    .Replace("$user$", publisher.User)
+                    .Replace("$password$", publisher.Password)))
+                    success = false;
+                else
+                    Console.WriteLine("Done");
+
+                if (success) return true; else return false;
             }
             catch (Exception ex)
             {

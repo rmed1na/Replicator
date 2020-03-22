@@ -15,6 +15,7 @@
     <None Remove="Data\Query\Publisher.AddPushSubscriptionAgent.sql" />
     <None Remove="Data\Query\Publisher.AddSubscription.sql" />
     <None Remove="Data\Query\Publisher.DatabaseReplOption.sql" />
+    <None Remove="Data\Query\Publisher.SetLogReaderAgent.sql" />
   </ItemGroup>
 
   <ItemGroup>
@@ -43,6 +44,9 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </EmbeddedResource>
     <EmbeddedResource Include="Data\Query\Publisher.DatabaseReplOption.sql">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Data\Query\Publisher.SetLogReaderAgent.sql">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </EmbeddedResource>
   </ItemGroup>

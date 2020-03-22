@@ -29,6 +29,7 @@ namespace Setup.Models
             Publisher.AddArticle = GetResource("Publisher.AddArticle.sql");
             Publisher.AddSubscription = GetResource("Publisher.AddSubscription.sql");
             Publisher.AddPushSubscriptionAgent = GetResource("Publisher.AddPushSubscriptionAgent.sql");
+            Publisher.SetLogReaderAgent = GetResource("Publisher.SetLogReaderAgent.sql");
         }
         private string GetResource(string resource)
         {
@@ -62,5 +63,6 @@ namespace Setup.Models
         public string AddArticle { get; set; }
         public string AddSubscription { get; set; }
         public string AddPushSubscriptionAgent { get; set; }
+        public string SetLogReaderAgent { get; set; }
     }
 }
