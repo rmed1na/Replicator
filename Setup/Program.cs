@@ -290,6 +290,16 @@ namespace Setup
                     else
                         Console.WriteLine("Done");
 
+                    Console.Write("Adding it's push subscription agent... ");
+                    if (!publisher.WriteData(query.Publisher.AddPushSubscriptionAgent
+                        .Replace("$database$", publisher.Database)
+                        .Replace("$subscriberHostname$", subscriberHostName)
+                        .Replace("$user$", subscriber.User)
+                        .Replace("$password$", subscriber.Password)))
+                        success = false;
+                    else
+                        Console.WriteLine("Done");
+
                     if (success) return true; return false;
                 }
                 return true;
