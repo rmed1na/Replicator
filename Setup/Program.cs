@@ -45,6 +45,8 @@ namespace Setup
                                     } while (answer.ToUpper() == "Y" || answer.ToUpper() == "YES");
 
                                     Console.WriteLine();
+                                    SetupPublisherLogReaderAgent(publisher);
+                                    Console.WriteLine();
 
                                     do
                                     {
@@ -54,10 +56,7 @@ namespace Setup
                                         if (answer.ToUpper() == "YES" || answer.ToUpper() == "Y")
                                             AddSubscription(publisher);
 
-                                    } while (answer.ToUpper() == "YES" || answer.ToUpper() == "Y");
-
-                                    Console.WriteLine();
-                                    SetupPublisherLogReaderAgent(publisher);
+                                    } while (answer.ToUpper() == "YES" || answer.ToUpper() == "Y");   
                                 }
                         }
                             
@@ -304,9 +303,15 @@ namespace Setup
                     else
                         Console.WriteLine("Done");
 
-                    if (success) return true; return false;
                 }
-                return true;
+                else
+                {
+                    success = false;
+                    Console.WriteLine("Could not connect to subscriber. Verify credentials");
+                }
+
+
+                if (success) return true; return false;
             }
             catch (Exception ex)
             {
