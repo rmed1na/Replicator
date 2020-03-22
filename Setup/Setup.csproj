@@ -12,6 +12,8 @@
     <None Remove="Data\Query\Publisher.AddArticle.sql" />
     <None Remove="Data\Query\Publisher.AddDistributor.sql" />
     <None Remove="Data\Query\Publisher.AddPublication.sql" />
+    <None Remove="Data\Query\Publisher.AddPushSubscriptionAgent.sql" />
+    <None Remove="Data\Query\Publisher.AddSubscription.sql" />
     <None Remove="Data\Query\Publisher.DatabaseReplOption.sql" />
   </ItemGroup>
 
@@ -32,6 +34,12 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </EmbeddedResource>
     <EmbeddedResource Include="Data\Query\Publisher.AddPublication.sql">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Data\Query\Publisher.AddPushSubscriptionAgent.sql">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Data\Query\Publisher.AddSubscription.sql">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </EmbeddedResource>
     <EmbeddedResource Include="Data\Query\Publisher.DatabaseReplOption.sql">

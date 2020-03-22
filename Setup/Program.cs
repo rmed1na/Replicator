@@ -35,7 +35,19 @@ namespace Setup
                                     string answer;
                                     do
                                     {
-                                        Console.WriteLine("Add article(s)?");
+                                        Console.Write("Add subscription(s)? (yes/no) (y/n) ");
+                                        answer = Console.ReadLine();
+
+                                        if (answer.ToUpper() == "YES" || answer.ToUpper() == "Y")
+                                            AddSubscription(publisher);
+
+                                    } while (answer.ToUpper() == "YES" || answer.ToUpper() == "Y");
+
+                                    Console.WriteLine();
+
+                                    do
+                                    {
+                                        Console.Write("Add article(s)? (yes/no) (y/n) ");
                                         answer = Console.ReadLine();
 
                                         if (answer.ToUpper() == "Y" || answer.ToUpper() == "YES")
@@ -241,6 +253,46 @@ namespace Setup
                 }
 
                 if (success) return true; else return false;
+            }
+            catch (Exception ex)
+            {
+                return false;
+            }
+        }
+        static bool AddSubscription(MSSQLServer publisher)
+        {
+            bool success = true;
+            MSSQLServer subscriber  = new MSSQLServer();
+            Query query = new Query();
+            subscriber.DebugMode = true;
+            try
+            {
+                Console.Write("Subscriber Ip address: ");
+                subscriber.Server = Console.ReadLine();
+
+                Console.Write("Subscriber Port number (blank if default): ");
+                var subscriberPort = Console.ReadLine();
+                subscriber.Server = $"{subscriber.Server},{(string.IsNullOrWhiteSpace(subscriberPort) ? "1433" : subscriberPort)}";
+
+                Console.Write("Subscriber mssql User: ");
+                subscriber.User = Console.ReadLine();
+
+                Console.Write("Subscriber mssql Password: ");
+                subscriber.Password = Console.ReadLine();
+
+                if (subscriber.SetConnection())
+                {
+                    Console.Write("Adding new subscription... ");
+                    var subscriberHostName = subscriber.GetData("SELECT @@SERVERNAME").Rows[0][0].ToString();
+
+                    if (!publisher.WriteData(query.Publisher.AddSubscription.Replace("$database$", publisher.Database).Replace("$hostname$", subscriberHostName)))
+                        success = false;
+                    else
+                        Console.WriteLine("Done");
+
+                    if (success) return true; return false;
+                }
+                return true;
             }
             catch (Exception ex)
             {

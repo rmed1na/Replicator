@@ -27,6 +27,8 @@ namespace Setup.Models
             Publisher.DatabaseReplOption = GetResource("Publisher.DatabaseReplOption.sql");
             Publisher.AddPublication = GetResource("Publisher.AddPublication.sql");
             Publisher.AddArticle = GetResource("Publisher.AddArticle.sql");
+            Publisher.AddSubscription = GetResource("Publisher.AddSubscription.sql");
+            Publisher.AddPushSubscriptionAgent = GetResource("Publisher.AddPushSubscriptionAgent.sql");
         }
         private string GetResource(string resource)
         {
@@ -58,5 +60,7 @@ namespace Setup.Models
         public string DatabaseReplOption { get; set; }
         public string AddPublication { get; set; }
         public string AddArticle { get; set; }
+        public string AddSubscription { get; set; }
+        public string AddPushSubscriptionAgent { get; set; }
     }
 }
