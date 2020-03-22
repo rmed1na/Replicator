@@ -37,11 +37,14 @@ namespace Setup
                                     {
                                         Console.WriteLine("Add article(s)?");
                                         answer = Console.ReadLine();
-                                        AddArticle(publisher);
-                                    } while (answer == "Y" || answer == "y" || answer.ToUpper() == "YES");
+
+                                        if (answer.ToUpper() == "Y" || answer.ToUpper() == "YES")
+                                            AddArticle(publisher);
+
+                                    } while (answer.ToUpper() == "Y" || answer.ToUpper() == "YES");
                                 }
                         }
-
+                            
                     break;
                 default:
                     Print($"Selected option is not on the list ({option})", log);
