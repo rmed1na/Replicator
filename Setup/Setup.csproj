@@ -1,0 +1,48 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Remove="Data\Query\Distributor.Add.sql" />
+    <None Remove="Data\Query\Distributor.AddDb.sql" />
+    <None Remove="Data\Query\Distributor.AddPublisher.sql" />
+    <None Remove="Data\Query\Publisher.AddArticle.sql" />
+    <None Remove="Data\Query\Publisher.AddDistributor.sql" />
+    <None Remove="Data\Query\Publisher.AddPublication.sql" />
+    <None Remove="Data\Query\Publisher.DatabaseReplOption.sql" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Include="Data\Query\Distributor.Add.sql">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Data\Query\Distributor.AddDb.sql">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Data\Query\Distributor.AddPublisher.sql">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Data\Query\Publisher.AddArticle.sql">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Data\Query\Publisher.AddDistributor.sql">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Data\Query\Publisher.AddPublication.sql">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Data\Query\Publisher.DatabaseReplOption.sql">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="mssql.dbman" Version="2.0.10" />
+    <PackageReference Include="System.Data.SqlClient" Version="4.8.1" />
+    <PackageReference Include="tlogs" Version="1.3.4" />
+  </ItemGroup>
+
+</Project>

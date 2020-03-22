@@ -1,0 +1,1 @@
+﻿EXEC sp_adddistpublisher @publisher = '$HostName$', @distribution_db = '$DistributionDbName$'

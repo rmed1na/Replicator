@@ -1,0 +1,1 @@
+﻿EXEC sp_adddistributor @distributor = '$DistributorHostName$', @password = '$Password$';
