@@ -25,7 +25,7 @@ namespace Setup
             switch (option)
             {
                 case "1":
-                    Console.WriteLine("New Replication \r\n ----------------");
+                    Console.WriteLine("New Replication \r\n----------------\r\n");
                     if (ConfigureDistributor(ref distributor, ref publisher))
                         if (ConfigurePublisher(ref publisher, ref distributor))
                         {
@@ -56,10 +56,16 @@ namespace Setup
                                         if (answer.ToUpper() == "YES" || answer.ToUpper() == "Y")
                                             AddSubscription(publisher, distributor, dbname);
 
-                                    } while (answer.ToUpper() == "YES" || answer.ToUpper() == "Y");   
+                                    } while (answer.ToUpper() == "YES" || answer.ToUpper() == "Y");
                                 }
                         }
-                            
+                    Console.WriteLine("Done. Press any key to exit this action...");
+                    Console.Clear();
+                    Menu(ref option);
+                    break;
+                case "9":
+                    Console.WriteLine("Quitting console...");
+                    Environment.Exit(0);
                     break;
                 default:
                     Print($"Selected option is not on the list ({option})", log);
@@ -68,10 +74,11 @@ namespace Setup
         }
         static void Menu(ref string option)
         {
-            Console.WriteLine("SQL Server Setup Console \r\n");
+            Console.WriteLine("SQL Server Transactional Replication Setup Console \r\n");
             Console.WriteLine("Actions:");
             Console.WriteLine("--------");
             Console.WriteLine(" 1 - Setup initial replication schema");
+            Console.WriteLine(" 9 - Exit");
 
             Console.Write("\r\nChoose an action: ");
             option = Console.ReadLine();
