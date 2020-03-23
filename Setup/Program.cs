@@ -17,7 +17,7 @@ namespace Setup
             distributor.DebugMode = true;
             publisher.DebugMode = true;
             string option = null;
-            const string dbname = "UTP";
+            string dbname;
 
             Menu(ref option);
             Console.Clear();
@@ -26,6 +26,8 @@ namespace Setup
             {
                 case "1":
                     Console.WriteLine("New Replication \r\n----------------\r\n");
+                    Console.Write("Database? >> ");
+                    dbname = Console.ReadLine();
                     if (ConfigureDistributor(ref distributor, ref publisher))
                         if (ConfigurePublisher(ref publisher, ref distributor))
                         {
