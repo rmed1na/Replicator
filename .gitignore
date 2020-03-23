@@ -339,4 +339,4 @@ ASALocalRun/
 # BeatPulse healthcheck temp database
 healthchecksdb
 /Virtual Machine
-/Database
+/Database/UTP-BDD-MSSQLREPL DB SCRIPT 2020.03.21.sql
