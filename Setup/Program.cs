@@ -54,7 +54,7 @@ namespace Setup
                                         answer = Console.ReadLine();
 
                                         if (answer.ToUpper() == "YES" || answer.ToUpper() == "Y")
-                                            AddSubscription(publisher, distributor);
+                                            AddSubscription(publisher, distributor, dbname);
 
                                     } while (answer.ToUpper() == "YES" || answer.ToUpper() == "Y");   
                                 }
@@ -265,7 +265,7 @@ namespace Setup
                 return false;
             }
         }
-        static bool AddSubscription(MSSQLServer publisher, MSSQLServer distributor)
+        static bool AddSubscription(MSSQLServer publisher, MSSQLServer distributor, string dbname)
         {
             bool success = true;
             MSSQLServer subscriber  = new MSSQLServer();
@@ -311,7 +311,47 @@ namespace Setup
 
                     if (answer.ToUpper() == "YES" || answer.ToUpper() == "Y")
                     {
+                        if (AddDistributorPublisher(distributor, subscriber))
+                            if (ConfigurePublisher(ref subscriber, ref distributor))
+                            {
+                                subscriber.Database = dbname;
+                                if (SetupDatabaseForReplication(subscriber))
+                                    if (CreatePublication(subscriber))
+                                    {
+                                        do
+                                        {
+                                            Console.Write("Add article(s) (yes/no) (y/n) ");
+                                            answer = Console.ReadLine();
 
+                                            if (answer.ToUpper() == "YES" || answer.ToUpper() == "Y")
+                                                AddArticle(subscriber);
+
+                                        } while (answer.ToUpper() == "YES" || answer.ToUpper() == "Y");
+
+                                        Console.Write("Adding new subscription for this subscriber... ");
+                                        var publisherHostName = publisher.GetData("SELECT @@SERVERNAME").Rows[0][0].ToString();
+
+                                        if (!subscriber.WriteData(query.Publisher.AddSubscription
+                                            .Replace("$database$", subscriber.Database)
+                                            .Replace("$hostname$", publisherHostName)))
+                                            success = false;
+                                        else
+                                            Console.WriteLine("Done");
+
+                                        Console.Write("Adding it's push subscription agent... ");
+                                        if (!subscriber.WriteData(query.Publisher.AddPushSubscriptionAgent
+                                            .Replace("$database$", subscriber.Database)
+                                            .Replace("$subscriberHostname$", publisherHostName)
+                                            .Replace("$user$", publisher.User)
+                                            .Replace("$password$", publisher.Password)))
+                                            success = false;
+                                        else
+                                            Console.WriteLine("Done");
+
+                                        if (success)
+                                            SetupPublisherLogReaderAgent(subscriber);
+                                    }
+                            }
                     }
                 }
                 else
@@ -319,7 +359,6 @@ namespace Setup
                     success = false;
                     Console.WriteLine("(ERROR) Could not connect to subscriber. Verify credentials");
                 }
-
 
                 if (success) return true; return false;
             }
