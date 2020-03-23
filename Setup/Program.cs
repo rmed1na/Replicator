@@ -187,17 +187,28 @@ namespace Setup
         static bool ConfigurePublisher(ref MSSQLServer publisher, ref MSSQLServer distributor)
         {
             bool success = true;
+            bool alreadyConfigured = false;
             Query query = new Query();
             try
             {
                 Console.Write("Setting up publisher... ");
-                var distributorHostName = distributor.GetData("SELECT @@SERVERNAME").Rows[0][0].ToString();
-                if (!publisher.WriteData(query.Publisher.AddDistributor
-                    .Replace("$DistributorHostName$", distributorHostName)
-                    .Replace("$Password$", publisher.Password)))
-                    success = false;
-                else
-                    Console.WriteLine("Done");
+
+                if (publisher.Server == distributor.Server)
+                {
+                    Console.WriteLine("Distributor and Publisher are the same server. Skipping this step... ");
+                    alreadyConfigured = true;
+                }
+
+                if (!alreadyConfigured)
+                {
+                    var distributorHostName = distributor.GetData("SELECT @@SERVERNAME").Rows[0][0].ToString();
+                    if (!publisher.WriteData(query.Publisher.AddDistributor
+                        .Replace("$DistributorHostName$", distributorHostName)
+                        .Replace("$Password$", publisher.Password)))
+                        success = false;
+                    else
+                        Console.WriteLine("Done");
+                }
 
                 if (success) return true; else return false;
             }
