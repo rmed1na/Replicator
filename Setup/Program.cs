@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using TextLogs;
 using mssql.dbman;
 using System.Data.SqlClient;
+using System.Threading;
 
 namespace Setup
 {
@@ -67,6 +68,7 @@ namespace Setup
                     break;
                 case "9":
                     Console.WriteLine("Quitting console...");
+                    Thread.Sleep(2000);
                     Environment.Exit(0);
                     break;
                 default:
