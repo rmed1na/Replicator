@@ -1,5 +1,4 @@
 # mssql-transRepl-manager
-.NET Core Console for basic MSSql (2017) transactional (bidirectional) replication on Linux Docker containers
 
 This console configures a transactional replication schema from scratch on a Linux SQL Server Installation. Bidirectional option is also available (data flows from subscriber to publisher). 
 
