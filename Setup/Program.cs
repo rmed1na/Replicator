@@ -27,7 +27,7 @@ namespace Setup
             {
                 case "1":
                     Console.WriteLine("New Replication \r\n----------------\r\n");
-                    Console.Write("Database? >> ");
+                    Console.Write("Database: ");
                     dbname = Console.ReadLine();
                     if (ConfigureDistributor(ref distributor, ref publisher))
                         if (ConfigurePublisher(ref publisher, ref distributor))
@@ -66,6 +66,70 @@ namespace Setup
                     Console.Clear();
                     Menu(ref option);
                     break;
+                case "2":
+                    MSSQLServer subscriber = new MSSQLServer(log: log);
+                    Console.Clear();
+                    Console.WriteLine("Adding new subscription to publication...\r\n");
+                    Console.Write("Database: ");
+                    dbname = Console.ReadLine();
+
+                    if (string.IsNullOrWhiteSpace(distributor.Server))
+                    {
+                        Console.Write("Distributor Ip address: ");
+                        distributor.Server = Console.ReadLine();
+
+                        Console.Write("Distributor port number (blank if default): ");
+                        var distributorPort = Console.ReadLine();
+                        distributor.Server = $"{distributor.Server},{(string.IsNullOrWhiteSpace(distributorPort) ? "1433" : distributorPort)}";
+
+                        Console.Write("Distributor mssql user: ");
+                        distributor.User = Console.ReadLine();
+
+                        Console.Write("Distributor mssql password: ");
+                        distributor.Password = Console.ReadLine();
+                        
+                        Console.WriteLine();
+                    }
+                    
+                    if (string.IsNullOrWhiteSpace(publisher.Server))
+                    {
+                        Console.Write("Publisher Ip address: ");
+                        publisher.Server = Console.ReadLine();
+
+                        Console.Write("Publisher port number (blank if default): ");
+                        var publisherPort = Console.ReadLine();
+                        publisher.Server = $"{publisher.Server},{(string.IsNullOrWhiteSpace(publisherPort) ? "1433" : publisherPort)}";
+
+                        Console.Write("Publisher mssql user: ");
+                        publisher.User = Console.ReadLine();
+
+                        Console.Write("Publisher mssql password: ");
+                        publisher.Password = Console.ReadLine();
+
+                        Console.WriteLine();
+                    }
+
+                    //Console.Write("Subscriber Ip address: ");
+                    //subscriber.Server = Console.ReadLine();
+
+                    //Console.Write("Subscriber port number (blank if default): ");
+                    //var subscriberPort = Console.ReadLine();
+                    //subscriber.Server = $"{subscriber.Server}, {(string.IsNullOrWhiteSpace(subscriberPort) ? "1433" : subscriberPort)}";
+
+                    //Console.Write("Subscriber mssql user: ");
+                    //subscriber.User = Console.ReadLine();
+
+                    //Console.Write("Subscriber mssql password: ");
+                    //subscriber.Password = Console.ReadLine();
+
+                    publisher.Database = dbname;
+                    distributor.Database = "distribution";
+                    AddSubscription(publisher, distributor, dbname);
+                    Console.WriteLine("\r\nSubcription added succesfully. Prease any key to exit this action");
+                    Console.ReadKey();
+                    Console.Clear();
+                    Menu(ref option);
+                    break;
                 case "9":
                     Console.WriteLine("Quitting console...");
                     Thread.Sleep(2000);
@@ -82,6 +146,7 @@ namespace Setup
             Console.WriteLine("Actions:");
             Console.WriteLine("--------");
             Console.WriteLine(" 1 - Setup initial replication schema");
+            Console.WriteLine(" 2 - Add subscription to publication");
             Console.WriteLine(" 9 - Exit");
 
             Console.Write("\r\nChoose an action: ");
@@ -150,22 +215,6 @@ namespace Setup
                     if (!distributor.WriteData(query.Distributor.AddDb.Replace("$DbName$", distributor.Database)))
                         success = false;
                     Console.WriteLine("Done");
-
-                    ////Add publisher to distributor
-                    //Console.Write("Adding publisher on distributor... ");
-                    //if (publisher.SetConnection())
-                    //{
-                    //    var publisherHostname = publisher.GetData("SELECT @@SERVERNAME").Rows[0][0].ToString();
-                    //    var sql = query.Distributor.AddPublisher.Replace("$HostName$", publisherHostname).Replace("$DistributionDbName$", distributor.Database);
-                    //    if (!distributor.WriteData(sql))
-                    //        success = false;
-                    //    Console.WriteLine("Done");
-                    //}
-                    //else
-                    //{
-                    //    success = false;
-                    //    Console.WriteLine($"(ERROR) Could not connect to publisher");
-                    //}
 
                     if (!AddDistributorPublisher(distributor, publisher))
                         success = false;
@@ -312,6 +361,7 @@ namespace Setup
                     Console.Write("Adding new subscription... ");
                     var subscriberHostName = subscriber.GetData("SELECT @@SERVERNAME").Rows[0][0].ToString();
 
+                    publisher.SetConnection();
                     if (!publisher.WriteData(query.Publisher.AddSubscription.Replace("$database$", publisher.Database).Replace("$hostname$", subscriberHostName)))
                         success = false;
                     else
@@ -421,6 +471,7 @@ namespace Setup
                 if (publisher.SetConnection())
                 {
                     var publisherHostname = publisher.GetData("SELECT @@SERVERNAME").Rows[0][0].ToString();
+                    distributor.SetConnection();
                     var sql = query.Distributor.AddPublisher.Replace("$HostName$", publisherHostname).Replace("$DistributionDbName$", distributor.Database);
                     if (!distributor.WriteData(sql))
                         success = false;
@@ -437,6 +488,7 @@ namespace Setup
             }
             catch (Exception ex)
             {
+                Console.WriteLine($"ERROR - Could not add publisher to distributor. {ex.Message} | {ex.StackTrace}");
                 return false;
             }
         }
