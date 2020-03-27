@@ -109,19 +109,6 @@ namespace Setup
                         Console.WriteLine();
                     }
 
-                    //Console.Write("Subscriber Ip address: ");
-                    //subscriber.Server = Console.ReadLine();
-
-                    //Console.Write("Subscriber port number (blank if default): ");
-                    //var subscriberPort = Console.ReadLine();
-                    //subscriber.Server = $"{subscriber.Server}, {(string.IsNullOrWhiteSpace(subscriberPort) ? "1433" : subscriberPort)}";
-
-                    //Console.Write("Subscriber mssql user: ");
-                    //subscriber.User = Console.ReadLine();
-
-                    //Console.Write("Subscriber mssql password: ");
-                    //subscriber.Password = Console.ReadLine();
-
                     publisher.Database = dbname;
                     distributor.Database = "distribution";
                     AddSubscription(publisher, distributor, dbname);
