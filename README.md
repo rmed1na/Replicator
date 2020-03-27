@@ -6,7 +6,7 @@ This console configures a transactional replication schema from scratch on a Lin
 **Pre requisites:**
 
   1. SQL Server 2017 installation over Linux (Docker is recommended)
-  2. Database engines must be on the same network, so they can see each other by hostname (if using Docker, just run "docker network create network_name" and then "docker network connect network_name container_name")
+  2. Database engines must be on the same network, so they can see each other by hostname (if using Docker, just run `docker network create network_name` and then `docker network connect network_name container_name`)
   3. SQL Agent must be enabled (it's disabled by default). (if using Docker, just run `docker exec -it container_name /opt/mssql/bin/mssql-conf set sqlagent.enabled true`)
   4. Replication Data folder (ReplData for this solution) must be made manually for the distributor (if using Docker, just run `docker exec -it container_name mkdir /var/opt/mssql/ReplData`. Container must be restarted after this.)
   
