@@ -1,4 +1,4 @@
-# mssql-transRepl-manager
+# MSSQL Transactional Replication Setup
 
 This console configures a transactional replication schema from scratch on a Linux SQL Server Installation. Bidirectional option is also available (data flows from subscriber to publisher). 
 
