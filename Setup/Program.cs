@@ -222,6 +222,7 @@ namespace Setup
                 return false;
             }
         }
+        
         static bool ConfigurePublisher(ref MSSQLServer publisher, ref MSSQLServer distributor)
         {
             bool success = true;
@@ -254,12 +255,15 @@ namespace Setup
                 return false;
             }
         }
+        
         static bool SetupDatabaseForReplication(MSSQLServer publisher)
         {
             Query query = new Query();
             bool success = true;
             try
             {
+                CheckForDbExistence(publisher, publisher.Database);
+
                 Console.Write("\r\nSetting up database for replication... ");
                 if (!publisher.WriteData(query.Publisher.DatabaseReplOption.Replace("$Database$", publisher.Database)))
                     success = false;
@@ -274,6 +278,7 @@ namespace Setup
                 return false;
             }
         }
+        
         static bool CreatePublication(MSSQLServer publisher)
         {
             Query query = new Query();
@@ -295,6 +300,7 @@ namespace Setup
                 return false;
             }
         }
+        
         static bool AddArticle(MSSQLServer publisher)
         {
             Query query = new Query();
@@ -322,6 +328,7 @@ namespace Setup
                 return false;
             }
         }
+        
         static bool AddSubscription(MSSQLServer publisher, MSSQLServer distributor, string dbname)
         {
             bool success = true;
@@ -425,6 +432,7 @@ namespace Setup
                 return false;
             }
         }
+        
         static bool SetupPublisherLogReaderAgent(MSSQLServer publisher)
         {
             Query query = new Query();
@@ -447,6 +455,7 @@ namespace Setup
                 return false;
             }
         }
+        
         static bool AddDistributorPublisher(MSSQLServer distributor, MSSQLServer publisher)
         {
             bool success = true;
@@ -476,6 +485,47 @@ namespace Setup
             catch (Exception ex)
             {
                 Console.WriteLine($"ERROR - Could not add publisher to distributor. {ex.Message} | {ex.StackTrace}");
+                return false;
+            }
+        }
+
+        static bool CheckForDbExistence(MSSQLServer dbserver, string dbname)
+        {
+            Query query = new Query();
+            try
+            {
+                bool success = true;
+                bool exists = false;
+                dbserver.Database = "MASTER";
+
+                if (dbserver.SetConnection())
+                    exists = (dbserver.GetData($"SELECT * FROM sys.databases WHERE name = '{dbname}'").Rows.Count > 0) ? true : false;
+
+                if (!exists)
+                {
+                    Console.Write($"\r\nDatabase {dbname} does not exist on {dbserver.Server}. Auto-create with schema script? (yes/no) (y/n):  ");
+                    var answer = Console.ReadLine();
+
+                    if (answer.ToUpper() == "YES" || answer.ToUpper() == "Y")
+                    {
+                        Console.Write("Executing schema script... ");
+                        var sql = query.Schema.Replace("$DbName$", dbname);
+                        if (!dbserver.WriteData(sql))
+                        {
+                            success = false;
+                            Console.WriteLine("(ERROR) Could not complete schama script execution. Please verify.");
+                        }
+                        else
+                            Console.WriteLine("Done");
+                    }
+                    else
+                        Console.WriteLine("Ignoring auto-create... Make sure the schema exists on this server.");
+                }
+
+                return success;
+            }
+            catch (Exception ex)
+            {
                 return false;
             }
         }
