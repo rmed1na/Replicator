@@ -18,11 +18,7 @@ namespace Setup.Models
         }
         public Distributor Distributor { get; }
         public Publisher Publisher { get; }
-        public string Schema
-        {
-            get { return Schema; }
-            set { Schema = GetResource("Schema.sql"); }
-        }
+        public string Schema { get; set;  }
 
         private void SetQuery()
         {
@@ -37,6 +33,8 @@ namespace Setup.Models
             Publisher.AddSubscription = GetResource("Publisher.AddSubscription.sql");
             Publisher.AddPushSubscriptionAgent = GetResource("Publisher.AddPushSubscriptionAgent.sql");
             Publisher.SetLogReaderAgent = GetResource("Publisher.SetLogReaderAgent.sql");
+
+            Schema = GetResource("Schema.sql");
         }
         private string GetResource(string resource)
         {

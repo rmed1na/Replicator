@@ -29,6 +29,15 @@ namespace Setup
                     Console.WriteLine("New Replication \r\n----------------\r\n");
                     Console.Write("Database: ");
                     dbname = Console.ReadLine();
+
+                    //MSSQLServer db = new MSSQLServer(log: log);
+                    //db.Server = "192.168.0.181,1451";
+                    //db.Database = "master";
+                    //db.User = "sa";
+                    //db.Password = "Pwd12345!";
+                    //db.DebugMode = true;
+                    //CheckForDbExistence(db, dbname);
+
                     if (ConfigureDistributor(ref distributor, ref publisher))
                         if (ConfigurePublisher(ref publisher, ref distributor))
                         {
@@ -123,7 +132,7 @@ namespace Setup
                     Environment.Exit(0);
                     break;
                 default:
-                    Print($"Selected option is not on the list ({option})", log);
+                    Print($"Selected option is not on the list ({option})...", log);
                     break;
             }
         }
@@ -262,7 +271,7 @@ namespace Setup
             bool success = true;
             try
             {
-                CheckForDbExistence(publisher, publisher.Database);
+                //CheckForDbExistence(publisher, publisher.Database);
 
                 Console.Write("\r\nSetting up database for replication... ");
                 if (!publisher.WriteData(query.Publisher.DatabaseReplOption.Replace("$Database$", publisher.Database)))
@@ -496,7 +505,7 @@ namespace Setup
             {
                 bool success = true;
                 bool exists = false;
-                dbserver.Database = "MASTER";
+                dbserver.Database = "master";
 
                 if (dbserver.SetConnection())
                     exists = (dbserver.GetData($"SELECT * FROM sys.databases WHERE name = '{dbname}'").Rows.Count > 0) ? true : false;
@@ -508,9 +517,15 @@ namespace Setup
 
                     if (answer.ToUpper() == "YES" || answer.ToUpper() == "Y")
                     {
-                        Console.Write("Executing schema script... ");
-                        var sql = query.Schema.Replace("$DbName$", dbname);
-                        if (!dbserver.WriteData(sql))
+                        Console.Write("Creating database... ");
+                        dbserver.WriteData($"CREATE DATABASE {dbname}");
+                        Console.WriteLine("Done");
+
+                        dbserver.Database = dbname;
+                        Console.WriteLine("Executing schema script... ");
+
+                        //var sql = query.Schema.Replace("$DbName$", dbname);
+                        if (!dbserver.WriteData(query.Schema))
                         {
                             success = false;
                             Console.WriteLine("(ERROR) Could not complete schama script execution. Please verify.");
