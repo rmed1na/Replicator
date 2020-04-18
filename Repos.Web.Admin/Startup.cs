@@ -8,6 +8,10 @@ using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Http;
+using Repos.Web.Admin.Data;
+using Repos.Web.Admin.Models;
 
 namespace Repos.Web.Admin
 {
@@ -23,7 +27,19 @@ namespace Repos.Web.Admin
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            var subConfig = Configuration.GetSection("Configuration");
+            var configuration = new Config();
+            subConfig.Bind(configuration);
+
+            services.AddSingleton(configuration);
             services.AddControllersWithViews();
+            services.AddTransient<IRepository, Repository>();
+            services.AddSession(options =>
+            {
+                options.Cookie.Name = "Repos.Auth";
+                options.IdleTimeout = TimeSpan.FromMinutes(30);
+                options.Cookie.IsEssential = true;
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -41,7 +57,7 @@ namespace Repos.Web.Admin
             }
             app.UseHttpsRedirection();
             app.UseStaticFiles();
-
+            app.UseSession();
             app.UseRouting();
 
             app.UseAuthorization();

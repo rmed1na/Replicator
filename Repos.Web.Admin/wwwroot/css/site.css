@@ -23,6 +23,18 @@ a {
     text-decoration: none;
 }
 
+input {
+    background-color: white;
+    height: 40px;
+    width: 200px;
+    margin: 10px auto;
+    text-align: center;
+    font-size: 17px;
+    font-family: 'Baloo Paaji 2', cursive;
+    border: 1px solid #B9B9B9;
+    border-radius: 7px;
+}
+
 a:visited {
     text-decoration: none;
     color: black;
