@@ -9,6 +9,11 @@ h1 {
 }
 
 h2 {
+    font-size: 40px;
+    font-weight: 300;
+}
+
+h3 {
     font-size: 30px;
     font-weight: 300;
 }
@@ -34,6 +39,35 @@ input {
     border: 1px solid #B9B9B9;
     border-radius: 7px;
 }
+
+table, th, td {
+    border-collapse: collapse;
+    text-align: center;
+    vertical-align: middle;
+    padding: 5px 5px;
+}
+
+table {
+    width: 80%;
+    margin: 10px auto;
+}
+
+th {
+    border: none;
+    height: 40px;
+    border-bottom: 1px solid #B9B9B9;
+    font-weight: 600;
+    font-size: 17px;
+}
+
+tr {
+    transition: 0.4s;
+}
+
+tr:hover {
+    background-color: #eae9e9;
+}
+
 
 a:visited {
     text-decoration: none;
@@ -75,3 +109,41 @@ a:visited {
     .box-selection a {
         line-height: 60px;
     }
+
+.edit-link img {
+    height: 17px;
+    vertical-align: middle;
+}
+
+.delete-link img {
+    height: 17px;
+    vertical-align: middle;
+}
+
+.button-left-container {
+    width: 100%;
+    margin: 50px auto;
+    text-align: center;
+}
+
+.button-left-container a {
+    font-size: 20px;
+    background-color: #262626;
+    color: white;
+    border-radius: 7px;
+    padding: 10px 20px;
+}
+
+.add-link-icon {
+    height: 15px;
+    vertical-align: middle;
+    margin-right: 10px;
+}
+
+.td-green {
+    color: #27ae60;
+}
+
+.td-red {
+    color: #c0392b;
+}

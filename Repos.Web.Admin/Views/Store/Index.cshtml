@@ -1,0 +1,55 @@
+﻿@using Repos.Web.Admin.ViewModels
+@model StoreViewModel
+@{
+    ViewData["Title"] = "Index";
+}
+
+<div>
+    <div>
+        <h1>Sucursales</h1>
+        <div>
+            <a>Nueva sucursal</a>
+        </div>
+    </div>
+    <div>
+        @if (Model != null && Model.Stores.Count > 0)
+        {
+            <table>
+                <thead>
+                    <tr>
+                        @Html.DisplayNameFor(model => model.Stores[0].Company)
+                    </tr>
+                    <tr>
+                        @Html.DisplayNameFor(model => model.Stores[0].Code)
+                    </tr>
+                    <tr>
+                        @Html.DisplayNameFor(model => model.Stores[0].Name)
+                    </tr>
+                    <tr>
+                        @Html.DisplayNameFor(model => model.Stores[0].Address)
+                    </tr>
+                    <tr>
+                        @Html.DisplayNameFor(model => model.Stores[0].Status)
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model.Stores)
+                    {
+                        <tr>
+                            <td>@Html.DisplayFor(i => item.Company.Name)</td>
+                            <td>@Html.DisplayFor(i => item.Code)</td>
+                            <td>@Html.DisplayFor(i => item.Name)</td>
+                            <td>@Html.DisplayFor(i => item.Address)</td>
+                            <td>@Html.DisplayFor(i => item.Status)</td>
+                            <td>
+                                <a asp-action="Edit" asp-route-id="@item.Id">Edit</a>
+                                <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        }
+    </div>
+</div>
+

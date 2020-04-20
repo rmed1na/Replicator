@@ -1,0 +1,56 @@
+﻿@model Company
+@{
+    ViewData["Title"] = "Company";
+    var companies = ViewData["Companies"] as List<Company>;
+}
+
+<div>
+    <div>
+        <h1>Empresas</h1>
+        <div class="button-left-container">
+            <a asp-controller="Company" asp-action="Create"><img class="add-link-icon" src="~/content/images/plus.png"/>Nueva empresa</a>
+        </div>
+    </div>
+    <div>
+        <table>
+            <thead>
+                <tr>
+                    <th>Id</th>
+                    <th>Creación</th>
+                    <th>Código</th>
+                    <th>Nombre</th>
+                    <th>Estatus</th>
+                    <th></th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var company in companies)
+                {
+                    <tr>
+                        <td>@company.Id</td>
+                        <td>@company.CreateDate</td>
+                        <td>@company.Code</td>
+                        <td>@company.Name</td>
+                        @if (company.Status)
+                        {
+                            <td class="td-green">Activo</td>
+                        }
+                        else
+                        {
+                            <td class="td-red">Inactivo</td>
+                        }
+                        <td>
+                            <a class="edit-link" asp-controller="Company" asp-action="Edit" asp-route-id="@company.Id"><img src="~/content/images/pencil.png" /></a>
+                        </td>
+                        <td>
+                            <a class="delete-link" asp-controller="Company" asp-action="Delete" asp-route-id="@company.Id"><img src="~/content/images/cross.png" /></a>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
+
+

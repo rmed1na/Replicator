@@ -1,0 +1,20 @@
+﻿@model Company
+@{
+    ViewData["Title"] = "Create";
+}
+
+<div>
+    <div>
+        <h1>Registra una nueva empresa</h1>
+    </div>
+    <div>
+        <form asp-controller="Company" asp-action="Create" method="post">
+            <input type="text" asp-for="Code" placeholder="Código" required/>
+            <br />
+            <input type="text" asp-for="Name" placeholder="Nombre" required />
+            <br />
+            <input type="submit" value="Guardar"/>
+        </form>
+    </div>
+</div>
+
