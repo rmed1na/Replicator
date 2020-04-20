@@ -1,0 +1,32 @@
+﻿@model Store
+@{
+    ViewData["Title"] = "Create";
+}
+
+<div>
+    <div>
+        <h1>Registra una nueva sucursal</h1>
+    </div>
+    <div>
+        <form asp-action="Create">
+            <label asp-for="Code"></label>
+            <input type="text" asp-for="Code" placeholder="Código" required/>
+            <span asp-validation-for="Code"></span>
+
+            <label asp-for="Name"></label>
+            <input type="text" asp-for="Name" placeholder="Nombre" required/>
+            <span asp-validation-for="Name"></span>
+
+            <label asp-for="Address"></label>
+            <input type="text" asp-for="Address" placeholder="Dirección"/>
+            <span asp-validation-for="Address"></span>
+
+            <label asp-for="Company.Code"></label>
+            <input type="text" asp-for="Company.Code" placeholder="Código de empresa"/>
+            <span asp-validation-for="Company.Code"></span>
+
+            <input type="submit" value="Guardar"/>
+        </form>
+    </div>
+</div>
+

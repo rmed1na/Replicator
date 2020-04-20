@@ -17,5 +17,9 @@ namespace Repos.Web.Admin.Data
         bool EditCompany(Company company);
         bool DeleteCompany(Company company);
         StoreViewModel GetStores(bool justActive = false);
+        Store GetStoreById(Guid Id);
+        bool EditStore(Store store);
+        bool CreateStore(Store store);
+        bool DeleteStore(Store store);
     }
 }

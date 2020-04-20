@@ -27,6 +27,7 @@ namespace Repos.Web.Admin.Data
             _db.User = _config.Database.User;
             _db.Password = _config.Database.Password;
         }
+        
         /// <summary>
         /// Checks if user credentials are valid
         /// </summary>
@@ -45,6 +46,7 @@ namespace Repos.Web.Admin.Data
 
             return ((user.Id == default) ? false : true);
         }
+        
         /// <summary>
         /// Fills out all user fields on user object
         /// </summary>
@@ -67,6 +69,7 @@ namespace Repos.Web.Admin.Data
             }
             return user;
         }
+        
         /// <summary>
         /// Gets a datatable with all the companies on the repository
         /// </summary>
@@ -112,6 +115,7 @@ namespace Repos.Web.Admin.Data
 
             return success;
         }
+        
         /// <summary>
         /// Gets a company by it's Id from the repository
         /// </summary>
@@ -166,6 +170,7 @@ namespace Repos.Web.Admin.Data
 
             return success;
         }
+        
         /// <summary>
         /// Gets a collection of stores from the repository
         /// </summary>
@@ -187,7 +192,7 @@ namespace Repos.Web.Admin.Data
                     Id = (Guid)row["ID"],
                     CreateDate = (DateTime)row["FechaRegistro"],
                     Code = (string)row["Codigo"],
-                    Name = (string)row["Nombre"],
+                    Name = AddStringFieldValue(row, "Nombre"),
                     Address = AddStringFieldValue(row, "Direccion"),
                     Status = (bool)row["Estatus"],
                     Company = new Company
@@ -198,13 +203,86 @@ namespace Repos.Web.Admin.Data
             }
             return storeViewModel;
         }
-
+        
+        /// <summary>
+        /// Handles DbNull values from repository
+        /// </summary>
+        /// <param name="row">DataRow that's being handled</param>
+        /// <param name="fieldName">Name of the column or field to check</param>
+        /// <returns>Actual string or empty one</returns>
         private string AddStringFieldValue(DataRow row, string fieldName)
         {
             if (!DBNull.Value.Equals(row[fieldName]))
                 return (string)row[fieldName];
             else
                 return string.Empty;
+        }
+        /// <summary>
+        /// Gets a store by it's Id from the repository
+        /// </summary>
+        /// <param name="Id">Store Id</param>
+        /// <returns>Store object</returns>
+        public Store GetStoreById(Guid Id)
+        {
+            DataTable dtStore = _db.GetData($"SELECT * FROM Sucursal WHERE ID = '{Id}'", autoConnect: true);
+            Store store = new Store();
+            foreach (DataRow row in dtStore.Rows)
+            {
+                store.Code = (string)row["Codigo"];
+                store.Name = AddStringFieldValue(row, "Nombre");
+                store.CreateDate = (DateTime)row["FechaRegistro"];
+                store.Address = AddStringFieldValue(row, "Direccion");
+                store.Status = (bool)row["Estatus"];
+                store.Company = new Company()
+                {
+                    Id = (Guid)row["EmpresaID"]
+                };
+            }
+            return (store);
+        }
+        /// <summary>
+        /// Edits a store attributes from an store object
+        /// </summary>
+        /// <param name="store">Store object</param>
+        /// <returns>Successful or unsuccessful transaction</returns>
+        public bool EditStore(Store store)
+        {
+            bool success = false;
+            var query = $"UPDATE Sucursal SET Codigo = '{store.Code}', Nombre = '{store.Name}', Direccion = '{store.Address}', Estatus = '{store.Status}'";
+
+            if (_db.SetConnection())
+                if (_db.WriteData(query))
+                    success = true;
+
+            return success;
+        }
+        /// <summary>
+        /// Creates a new store
+        /// </summary>
+        /// <param name="store">Store object</param>
+        /// <returns>Successful or unsuccessful transaction</returns>
+        public bool CreateStore(Store store)
+        {
+            bool success = false;
+            var query = $"INSERT INTO Sucursal (EmpresaID, Codigo, Nombre, Direccion, Estatus) VALUES((SELECT TOP 1 ID FROM Empresa WHERE Codigo = '{store.Company.Code}')," +
+                $"'{store.Code}', '{store.Name}', NULLIF('{store.Address}', ''), '{store.Status}')";
+
+            if (_db.SetConnection())
+                if (_db.WriteData(query))
+                    success = true;
+
+            return success;
+        }
+
+        public bool DeleteStore(Store store)
+        {
+            bool success = false;
+            var query = $"DELETE FROM Sucursal WHERE ID = '{store.Id}'";
+
+            if (_db.SetConnection() && (_db.WriteData(query)))
+                success = true;
+
+            return success;
         }
     }
 }
