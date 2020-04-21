@@ -16,6 +16,7 @@ namespace Repos.Web.Admin.Controllers
 
         public StoreController(ILogger<StoreController> logger, IRepository repo)
         {
+            _logger = logger;
             _repo = repo;
         }
 

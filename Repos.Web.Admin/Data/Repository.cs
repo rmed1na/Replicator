@@ -284,5 +284,84 @@ namespace Repos.Web.Admin.Data
 
             return success;
         }
+
+        public WarehouseViewModel GetWarehouses(bool justActive = false)
+        {
+            WarehouseViewModel warehouseViewModel = new WarehouseViewModel();
+            var query = $"SELECT * FROM Almacen";
+
+            if (justActive)
+                query += $" WHERE Estatus = 1";
+
+            DataTable dtWarehouses = _db.GetData(query, autoConnect: true);
+            foreach (DataRow row in dtWarehouses.Rows)
+            {
+                warehouseViewModel.Warehouses.Add(new Warehouse()
+                {
+                    Id = (Guid)row["ID"],
+                    CreateDate = (DateTime)row["FechaRegistro"],
+                    Code = (string)row["Codigo"],
+                    Name = (string)row["Nombre"],
+                    Status = (bool)row["Estatus"],
+                    Store = new Store()
+                    {
+                        Id = (Guid)row["SucursalID"]
+                    }
+                });
+            }
+            return warehouseViewModel;
+        }
+
+        public bool CreateWarehouse(Warehouse warehouse)
+        {
+            var query = $"INSERT INTO Almacen (SucursalID, Codigo, Nombre, Direccion) " +
+                $"VALUES((SELECT TOP 1 ID FROM Sucursal WHERE Codigo = '{warehouse.Store.Code}'), '{warehouse.Code}', '{warehouse.Name}', NULLIF('{warehouse.Address}', ''))";
+
+            if (_db.SetConnection() && _db.WriteData(query))
+                return true;
+            else
+                return false;
+        }
+
+        public Warehouse GetWarehouseById(Guid Id)
+        {
+            var query = $"SELECT * FROM Almacen WHERE ID = '{Id}'";
+            DataTable dtWarehouse = _db.GetData(query, autoConnect: true);
+            Warehouse warehouse = new Warehouse();
+
+            foreach (DataRow row in dtWarehouse.Rows)
+            {
+                warehouse.Code = (string)row["Codigo"];
+                warehouse.CreateDate = (DateTime)row["FechaRegistro"];
+                warehouse.Name = (string)row["Nombre"];
+                warehouse.Status = (bool)row["Estatus"];
+                warehouse.Store = new Store()
+                {
+                    Id = (Guid)row["SucursalID"]
+                };
+            }
+            return warehouse;
+        }
+
+        public bool EditWarehouse(Warehouse warehouse)
+        {
+            var query = $"UPDATE Almacen SET SucursalID = (SELECT ID FROM Sucursal WHERE Codigo = '{warehouse.Store.Code}')," +
+                $" Codigo = '{warehouse.Code}', Nombre = '{warehouse.Name}', Estatus = '{warehouse.Status}', Direccion = NULLIF('{warehouse.Address}', '')";
+
+            if (_db.SetConnection() && _db.WriteData(query))
+                return true;
+            else
+                return false;
+        }
+
+        public bool DeleteWarehouse(Warehouse warehouse)
+        {
+            var query = $"DELETE FROM Almacen WHERE ID = '{warehouse.Id}'";
+
+            if (_db.SetConnection() && _db.WriteData(query))
+                return true;
+            else
+                return false;
+        }
     }
 }

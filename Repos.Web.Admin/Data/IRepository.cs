@@ -21,5 +21,10 @@ namespace Repos.Web.Admin.Data
         bool EditStore(Store store);
         bool CreateStore(Store store);
         bool DeleteStore(Store store);
+        WarehouseViewModel GetWarehouses(bool justActive = false);
+        bool CreateWarehouse(Warehouse warehouse);
+        Warehouse GetWarehouseById(Guid Id);
+        bool EditWarehouse(Warehouse warehouse);
+        bool DeleteWarehouse(Warehouse warehouse);
     }
 }

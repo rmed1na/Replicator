@@ -1,0 +1,28 @@
+﻿@model Warehouse
+@{
+    ViewData["Title"] = "Create";
+}
+
+<div>
+    <div>
+        <h1>Registra un nuevo almacén</h1>
+    </div>
+    <div>
+        <form asp-action="Create">
+            <label asp-for="Code"></label>
+            <input type="text" asp-for="Code" placeholder="Código" required/>
+            <span asp-validation-for="Code"></span>
+
+            <label asp-for="Name"></label>
+            <input type="text" asp-for="Name" placeholder="Nombre" required/>
+            <span asp-validation-for="Name"></span>
+
+            <label asp-for="Store.Code"></label>
+            <input type="text" asp-for="Store.Code" placeholder="Código de tienda" required/>
+            <span asp-validation-for="Store.Code"></span>
+
+            <input type="submit" value="Guardar"/>
+        </form>
+    </div>
+</div>
+

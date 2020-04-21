@@ -1,0 +1,29 @@
+﻿@model Warehouse
+@{
+    ViewData["Title"] = "Delete";
+}
+
+<h2>Borrado de almacén @Model.Name</h2>
+<h3>¿Deseas borrar este almacén?</h3>
+<div>
+    <form asp-action="Delete">
+        <input type="hidden" asp-for="Id"/>
+
+        <dl>
+            <dt>@Html.DisplayNameFor(model => model.Id)</dt>
+            <dd>@Html.DisplayFor(model => model.Id)</dd>
+            <dt>@Html.DisplayNameFor(model => model.Code)</dt>
+            <dd>@Html.DisplayFor(model => model.Code)</dd>
+            <dt>@Html.DisplayNameFor(model => model.Name)</dt>
+            <dd>@Html.DisplayFor(model => model.Name)</dd>
+            <dt>@Html.DisplayNameFor(model => model.Address)</dt>
+            <dd>@Html.DisplayFor(model => model.Address)</dd>
+            <dt>@Html.DisplayNameFor(model => model.Status)</dt>
+            <dd>@Html.DisplayFor(model => model.Status)</dd>
+        </dl>
+
+        <input type="submit" value="Si, borrar"/>
+        <a asp-action="Index">No, regresar</a>
+    </form>
+</div>
+
