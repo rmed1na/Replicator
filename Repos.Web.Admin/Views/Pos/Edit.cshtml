@@ -1,0 +1,30 @@
+﻿@model Pos
+
+@{
+    ViewData["Title"] = "Edit";
+}
+
+<h1>Edición de caja @Model.Name</h1>
+<div>
+    <form asp-action="Edit">
+        <input type="hidden" asp-for="Id"/>
+
+        <label asp-for="Code"></label>
+        <input type="text" asp-for="Code"/>
+        <span asp-validation-for="Code"></span>
+
+        <label asp-for="Name"></label>
+        <input type="text" asp-for="Name"/>
+        <span asp-validation-for="Name"></span>
+
+        <label asp-for="Status"></label>
+        <input type="checkbox" asp-for="Status"/>
+        <span asp-validation-for="Status"></span>
+
+        <label asp-for="Warehouse.Code"></label>
+        <input type="text" asp-for="Warehouse.Code"/>
+        <span asp-validation-for="Warehouse.Code"></span>
+
+        <input type="submit" value="Guardar"/>
+    </form>
+</div>

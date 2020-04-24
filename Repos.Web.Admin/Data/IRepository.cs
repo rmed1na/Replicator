@@ -26,5 +26,10 @@ namespace Repos.Web.Admin.Data
         Warehouse GetWarehouseById(Guid Id);
         bool EditWarehouse(Warehouse warehouse);
         bool DeleteWarehouse(Warehouse warehouse);
+        bool CreatePos(Pos pos);
+        PosViewModel GetPos(bool justActive = false);
+        Pos GetPosById(Guid Id);
+        bool EditPos(Pos pos);
+        bool DeletePos(Pos pos);
     }
 }

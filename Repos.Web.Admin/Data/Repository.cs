@@ -363,5 +363,89 @@ namespace Repos.Web.Admin.Data
             else
                 return false;
         }
+
+        public bool CreatePos(Pos pos)
+        {
+            var query = $"INSERT INTO Caja (AlmacenID, Codigo, Nombre) VALUES((SELECT TOP 1 ID FROM Almacen WHERE Codigo = '{pos.Warehouse.Code}')," +
+                $" '{pos.Code}', '{pos.Name}')";
+
+            if (_db.SetConnection() && _db.WriteData(query))
+                return true;
+            else
+                return false;
+        }
+
+        public PosViewModel GetPos(bool justActive = false)
+        {
+            PosViewModel posViewModel = new PosViewModel();
+            var query = $"SELECT * FROM Caja";
+            if (justActive)
+                query += $" WHERE Estatus = 1";
+
+            DataTable dtPos = _db.GetData(query, autoConnect: true);
+            foreach (DataRow row in dtPos.Rows)
+            {
+                posViewModel.Pos.Add(new Pos()
+                {
+                    Id = (Guid)row["ID"],
+                    CreateDate = (DateTime)row["FechaRegistro"],
+                    Code = (string)row["Codigo"],
+                    Name = (string)row["Nombre"],
+                    Status = (bool)row["Estatus"],
+                    Ip = AddStringFieldValue(row, "Ip"),
+                    Hostname = AddStringFieldValue(row, "Hostname"),
+                    Warehouse = new Warehouse()
+                    {
+                        Id = (Guid)row["AlmacenID"]
+                    }
+                });
+            }
+            return posViewModel;
+        }
+
+        public Pos GetPosById(Guid Id)
+        {
+            var query = $"SELECT * FROM Caja WHERE ID = '{Id}'";
+            DataTable dtPos = _db.GetData(query, autoConnect: true);
+            Pos pos = new Pos();
+
+            foreach (DataRow row in dtPos.Rows)
+            {
+                pos.CreateDate = (DateTime)row["FechaRegistro"];
+                pos.Code = (string)row["Codigo"];
+                pos.Name = (string)row["Nombre"];
+                pos.Hostname = AddStringFieldValue(row, "Hostname");
+                pos.Ip = AddStringFieldValue(row, "Ip");
+                pos.Status = (bool)row["Estatus"];
+                pos.Warehouse = new Warehouse()
+                {
+                    Id = (Guid)row["AlmacenID"]
+                };
+            }
+            return pos;
+        }
+
+        public bool EditPos(Pos pos)
+        {
+            var query = $"UPDATE Caja SET Codigo = '{pos.Code}', " +
+                $" Nombre = '{pos.Name}', " +
+                $" Estatus = '{pos.Status}'," +
+                $" AlmacenID = (SELECT TOP 1 ID FROM Almacen WHERE Codigo = NULLIF('{pos.Warehouse.Code}', ''))";
+
+            if (_db.SetConnection() && _db.WriteData(query))
+                return true;
+            else
+                return false;
+        }
+
+        public bool DeletePos(Pos pos)
+        {
+            var query = $"DELETE FROM Caja WHERE ID = '{pos.Id}'";
+
+            if (_db.SetConnection() && _db.WriteData(query))
+                return true;
+            else
+                return false;
+        }
     }
 }

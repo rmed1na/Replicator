@@ -1,0 +1,28 @@
+﻿@model Pos
+@{
+    ViewData["Title"] = "Create";
+}
+
+<div>
+    <div>
+        <h1>Registra una nueva caja</h1>
+    </div>
+    <div>
+        <form asp-action="Create">
+            <label asp-for="Code"></label>
+            <input asp-for="Code" placeholder="Código" required />
+            <span asp-validation-for="Code"></span>
+
+            <label asp-for="Name"></label>
+            <input asp-for="Name" placeholder="Nombre" required />
+            <span asp-validation-for="Name"></span>
+
+            <label asp-for="Warehouse.Code"></label>
+            <input asp-for="Warehouse.Code" placeholder="Código de almacén" required />
+            <span asp-validation-for="Warehouse.Code"></span>
+
+            <input type="submit" value="Guardar" />
+        </form>
+    </div>
+</div>
+
