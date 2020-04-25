@@ -20,8 +20,11 @@
         <input type="Text" asp-for="Address" />
         <span asp-validation-for="Address"></span>
 
+        <label asp-for="Store.Code"></label>
+        <input type="text" asp-for="Store.Code"/>
+
         <label asp-for="Status"></label>
-        <input type="Text" asp-for="Status" />
+        <input type="checkbox" asp-for="Status" />
         <span asp-validation-for="Status"></span>
 
         <input type="submit" value="Guardar"/>

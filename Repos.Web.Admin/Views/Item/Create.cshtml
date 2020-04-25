@@ -18,11 +18,11 @@
             <span asp-validation-for="Description"></span>
 
             <label asp-for="Price"></label>
-            <input type="number"asp-for="Price"/>
+            <input type="number"asp-for="Price" step="0.01"/>
             <span asp-validation-for="Price"></span>
 
             <label asp-for="TaxPercentaje"></label>
-            <input type="number" asp-for="TaxPercentaje"/> %
+            <input type="number" asp-for="TaxPercentaje" max="100" min="1"/> %
             <span asp-validation-for="TaxPercentaje"></span>
 
             <label asp-for="Status"></label>

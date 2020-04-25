@@ -31,11 +31,11 @@
                         <td>@Html.DisplayFor(i => item.Code)</td>
                         <td>@Html.DisplayFor(i => item.Description)</td>
                         <td>@Html.DisplayFor(i => item.Price)</td>
-                        <td>@Html.DisplayFor(i => item.TaxPercentaje)</td>
+                        <td>@Html.DisplayFor(i => item.TaxPercentaje) %</td>
                         <td>@Html.DisplayFor(i => item.Status)</td>
                         <td>
                             <a asp-action="Edit" asp-route-id="@item.Id">Editar</a>
-                            <a asp-action="Delete" asp-route-it="@item.Id">Borrar</a>
+                            <a asp-action="Delete" asp-route-id="@item.Id">Borrar</a>
                         </td>
                     </tr>
                     }

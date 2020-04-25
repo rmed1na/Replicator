@@ -43,7 +43,7 @@ namespace Repos.Web.Admin.Controllers
         }
 
         [HttpPost]
-        public IActionResult Edit(Guid Id, [Bind("Id, Code, Name, Address, Status")] Warehouse warehouse)
+        public IActionResult Edit(Guid Id, [Bind("Id, Code, Name, Address, Status, Store")] Warehouse warehouse)
         {
             if (Id != warehouse.Id)
                 return NotFound();

@@ -129,6 +129,7 @@ namespace Repos.Web.Admin.Data
             
             if (dtCompany.Rows.Count > 0)
             {
+                company.Id = (Guid)dtCompany.Rows[0]["ID"];
                 company.CreateDate = (DateTime)dtCompany.Rows[0]["FechaRegistro"];
                 company.Code = (string)dtCompany.Rows[0]["Codigo"];
                 company.Name = (string)dtCompany.Rows[0]["Nombre"];
@@ -228,6 +229,7 @@ namespace Repos.Web.Admin.Data
             Store store = new Store();
             foreach (DataRow row in dtStore.Rows)
             {
+                store.Id = (Guid)row["ID"];
                 store.Code = (string)row["Codigo"];
                 store.Name = AddPossibleNullString(row, "Nombre");
                 store.CreateDate = (DateTime)row["FechaRegistro"];
@@ -264,8 +266,8 @@ namespace Repos.Web.Admin.Data
         public bool CreateStore(Store store)
         {
             bool success = false;
-            var query = $"INSERT INTO Sucursal (EmpresaID, Codigo, Nombre, Direccion, Estatus) VALUES((SELECT TOP 1 ID FROM Empresa WHERE Codigo = '{store.Company.Code}')," +
-                $"'{store.Code}', '{store.Name}', NULLIF('{store.Address}', ''), '{store.Status}')";
+            var query = $"INSERT INTO Sucursal (EmpresaID, Codigo, Nombre, Direccion) VALUES((SELECT TOP 1 ID FROM Empresa WHERE Codigo = '{store.Company.Code}')," +
+                $"'{store.Code}', '{store.Name}', NULLIF('{store.Address}', ''))";
 
             if (_db.SetConnection())
                 if (_db.WriteData(query))
@@ -336,10 +338,8 @@ namespace Repos.Web.Admin.Data
                 warehouse.CreateDate = (DateTime)row["FechaRegistro"];
                 warehouse.Name = (string)row["Nombre"];
                 warehouse.Status = (bool)row["Estatus"];
-                warehouse.Store = new Store()
-                {
-                    Id = (Guid)row["SucursalID"]
-                };
+                warehouse.Store = GetStoreById((Guid)row["SucursalID"]);
+                warehouse.Address = AddPossibleNullString(row, "Direccion");
             }
             return warehouse;
         }
