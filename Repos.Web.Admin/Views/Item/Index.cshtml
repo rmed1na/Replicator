@@ -1,0 +1,46 @@
+﻿@using Repos.Web.Admin.ViewModels
+@model ItemViewModel
+@{
+    ViewData["Title"] = "Index";
+}
+
+<div>
+    <div>
+        <h1>Artículos</h1>
+        <div>
+            <a asp-action="Create"><img class="add-link-icon"/>Nuevo artículo</a>
+        </div>
+    </div>
+    <div>
+        @if (Model != null && Model.Items.Count > 0)
+        {
+            <table>
+                <thead>
+                    <tr>@Html.DisplayNameFor(model => model.Items[0].Id)</tr>
+                    <tr>@Html.DisplayNameFor(model => model.Items[0].Code)</tr>
+                    <tr>@Html.DisplayNameFor(model => model.Items[0].Description)</tr>
+                    <tr>@Html.DisplayNameFor(model => model.Items[0].Price)</tr>
+                    <tr>@Html.DisplayNameFor(model => model.Items[0].TaxPercentaje)</tr>
+                    <tr>@Html.DisplayNameFor(model => model.Items[0].Status)</tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model.Items)
+                    {
+                    <tr>
+                        <td>@Html.DisplayFor(i => item.Id)</td>
+                        <td>@Html.DisplayFor(i => item.Code)</td>
+                        <td>@Html.DisplayFor(i => item.Description)</td>
+                        <td>@Html.DisplayFor(i => item.Price)</td>
+                        <td>@Html.DisplayFor(i => item.TaxPercentaje)</td>
+                        <td>@Html.DisplayFor(i => item.Status)</td>
+                        <td>
+                            <a asp-action="Edit" asp-route-id="@item.Id"></a>
+                            <a asp-action="Delete" asp-route-it="@item.Id"></a>
+                        </td>
+                    </tr>
+                    }
+                </tbody>
+            </table>
+        }
+    </div>
+</div>

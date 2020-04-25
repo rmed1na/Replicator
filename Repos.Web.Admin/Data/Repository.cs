@@ -411,16 +411,14 @@ namespace Repos.Web.Admin.Data
 
             foreach (DataRow row in dtPos.Rows)
             {
+                pos.Id = Id;
                 pos.CreateDate = (DateTime)row["FechaRegistro"];
                 pos.Code = (string)row["Codigo"];
                 pos.Name = (string)row["Nombre"];
                 pos.Hostname = AddStringFieldValue(row, "Hostname");
                 pos.Ip = AddStringFieldValue(row, "Ip");
                 pos.Status = (bool)row["Estatus"];
-                pos.Warehouse = new Warehouse()
-                {
-                    Id = (Guid)row["AlmacenID"]
-                };
+                pos.Warehouse = GetWarehouseById((Guid)row["AlmacenID"]);
             }
             return pos;
         }
@@ -441,6 +439,87 @@ namespace Repos.Web.Admin.Data
         public bool DeletePos(Pos pos)
         {
             var query = $"DELETE FROM Caja WHERE ID = '{pos.Id}'";
+
+            if (_db.SetConnection() && _db.WriteData(query))
+                return true;
+            else
+                return false;
+        }
+
+        public ItemViewModel GetItems(bool justActive = false)
+        {
+            ItemViewModel itemViewModel = new ItemViewModel();
+            var query = $"SELECT * FROM Articulo";
+
+            if (justActive)
+                query = $" WHERE Estatus = 1";
+
+            query += $" ORDER BY Referencia ASC"; 
+
+            DataTable dtItems = _db.GetData(query, autoConnect: true);
+            foreach (DataRow row in dtItems.Rows)
+                itemViewModel.Items.Add(new Item()
+                {
+                    Id = (Guid)row["ID"],
+                    CreateDate = (DateTime)row["FechaRegistro"],
+                    Code = (string)row["Referencia"],
+                    Description = AddStringFieldValue(row, "Descripcion"),
+                    Price = (decimal)row["Precio"],
+                    TaxPercentaje = (int)row["PorcentajeImpuesto"],
+                    Status = (bool)row["Estatus"]
+                });
+
+            return itemViewModel;
+        }
+        
+        public bool CreateItem(Item item)
+        {
+            var query = $"INSERT INTO Articulo (Referencia, Descripcion, Precio, PorcentajeImpuesto, Estatus)" +
+                $" VALUES('{item.Code}', NULLIF('{item.Description}',''), {item.Price}, {item.TaxPercentaje}, '{item.Status}')";
+
+            if (_db.SetConnection() && _db.WriteData(query))
+                return true;
+            else
+                return false;
+        }
+
+        public Item GetItemById(Guid Id)
+        {
+            Item item = null;
+            var query = $"SELECT * FROM Articulo WHERE ID = '{Id}'";
+
+            foreach (DataRow row in _db.GetData(query, autoConnect: true).Rows)
+                item = new Item()
+                {
+                    Id = (Guid)row["ID"],
+                    CreateDate = (DateTime)row["FechaRegistro"],
+                    Code = (string)row["Referencia"],
+                    Description = AddStringFieldValue(row, "Descripcion"),
+                    Price = (int)row["Precio"],
+                    TaxPercentaje = (int)row["PorcentajeImpuesto"],
+                    Status = (bool)row["Estatus"]
+                };
+
+            return item;
+        }
+
+        public bool EditItem(Item item)
+        {
+            var query = $"UPDATE Articulo SET Referencia = '{item.Code}'," +
+                $" Descripcion = NULLIF('{item.Description}', '')," +
+                $" Precio = {item.Price}," +
+                $" PorcentajeImpuesto = {item.TaxPercentaje}," +
+                $" Estatus = '{item.Status}'";
+
+            if (_db.SetConnection() && _db.WriteData(query))
+                return true;
+            else
+                return false;
+        }
+
+        public bool DeleteItem(Item item)
+        {
+            var query = $"DELETE FROM Articulo WHERE ID = '{item.Id}'";
 
             if (_db.SetConnection() && _db.WriteData(query))
                 return true;

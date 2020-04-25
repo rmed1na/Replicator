@@ -17,7 +17,7 @@ namespace Repos.Web.Admin.Models
         [Display(Name="Empresa")]
         public Company Company { get; set; }
         
-        [Display(Name="Código")]
+        [Display(Name="Código de tienda")]
         public string Code { get; set; }
         
         [Display(Name="Nombre")]

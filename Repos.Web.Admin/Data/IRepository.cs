@@ -31,5 +31,10 @@ namespace Repos.Web.Admin.Data
         Pos GetPosById(Guid Id);
         bool EditPos(Pos pos);
         bool DeletePos(Pos pos);
+        ItemViewModel GetItems(bool justActive = false);
+        bool CreateItem(Item item);
+        Item GetItemById(Guid Id);
+        bool EditItem(Item item);
+        bool DeleteItem(Item item);
     }
 }
