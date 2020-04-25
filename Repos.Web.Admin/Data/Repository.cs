@@ -192,8 +192,8 @@ namespace Repos.Web.Admin.Data
                     Id = (Guid)row["ID"],
                     CreateDate = (DateTime)row["FechaRegistro"],
                     Code = (string)row["Codigo"],
-                    Name = AddStringFieldValue(row, "Nombre"),
-                    Address = AddStringFieldValue(row, "Direccion"),
+                    Name = AddPossibleNullString(row, "Nombre"),
+                    Address = AddPossibleNullString(row, "Direccion"),
                     Status = (bool)row["Estatus"],
                     Company = new Company
                     {
@@ -210,7 +210,7 @@ namespace Repos.Web.Admin.Data
         /// <param name="row">DataRow that's being handled</param>
         /// <param name="fieldName">Name of the column or field to check</param>
         /// <returns>Actual string or empty one</returns>
-        private string AddStringFieldValue(DataRow row, string fieldName)
+        private string AddPossibleNullString(DataRow row, string fieldName)
         {
             if (!DBNull.Value.Equals(row[fieldName]))
                 return (string)row[fieldName];
@@ -229,9 +229,9 @@ namespace Repos.Web.Admin.Data
             foreach (DataRow row in dtStore.Rows)
             {
                 store.Code = (string)row["Codigo"];
-                store.Name = AddStringFieldValue(row, "Nombre");
+                store.Name = AddPossibleNullString(row, "Nombre");
                 store.CreateDate = (DateTime)row["FechaRegistro"];
-                store.Address = AddStringFieldValue(row, "Direccion");
+                store.Address = AddPossibleNullString(row, "Direccion");
                 store.Status = (bool)row["Estatus"];
                 store.Company = new Company()
                 {
@@ -331,6 +331,7 @@ namespace Repos.Web.Admin.Data
 
             foreach (DataRow row in dtWarehouse.Rows)
             {
+                warehouse.Id = (Guid)row["ID"];
                 warehouse.Code = (string)row["Codigo"];
                 warehouse.CreateDate = (DateTime)row["FechaRegistro"];
                 warehouse.Name = (string)row["Nombre"];
@@ -392,8 +393,8 @@ namespace Repos.Web.Admin.Data
                     Code = (string)row["Codigo"],
                     Name = (string)row["Nombre"],
                     Status = (bool)row["Estatus"],
-                    Ip = AddStringFieldValue(row, "Ip"),
-                    Hostname = AddStringFieldValue(row, "Hostname"),
+                    Ip = AddPossibleNullString(row, "Ip"),
+                    Hostname = AddPossibleNullString(row, "Hostname"),
                     Warehouse = new Warehouse()
                     {
                         Id = (Guid)row["AlmacenID"]
@@ -415,8 +416,8 @@ namespace Repos.Web.Admin.Data
                 pos.CreateDate = (DateTime)row["FechaRegistro"];
                 pos.Code = (string)row["Codigo"];
                 pos.Name = (string)row["Nombre"];
-                pos.Hostname = AddStringFieldValue(row, "Hostname");
-                pos.Ip = AddStringFieldValue(row, "Ip");
+                pos.Hostname = AddPossibleNullString(row, "Hostname");
+                pos.Ip = AddPossibleNullString(row, "Ip");
                 pos.Status = (bool)row["Estatus"];
                 pos.Warehouse = GetWarehouseById((Guid)row["AlmacenID"]);
             }
@@ -463,7 +464,7 @@ namespace Repos.Web.Admin.Data
                     Id = (Guid)row["ID"],
                     CreateDate = (DateTime)row["FechaRegistro"],
                     Code = (string)row["Referencia"],
-                    Description = AddStringFieldValue(row, "Descripcion"),
+                    Description = AddPossibleNullString(row, "Descripcion"),
                     Price = (decimal)row["Precio"],
                     TaxPercentaje = (int)row["PorcentajeImpuesto"],
                     Status = (bool)row["Estatus"]
@@ -494,8 +495,8 @@ namespace Repos.Web.Admin.Data
                     Id = (Guid)row["ID"],
                     CreateDate = (DateTime)row["FechaRegistro"],
                     Code = (string)row["Referencia"],
-                    Description = AddStringFieldValue(row, "Descripcion"),
-                    Price = (int)row["Precio"],
+                    Description = AddPossibleNullString(row, "Descripcion"),
+                    Price = (decimal)row["Precio"],
                     TaxPercentaje = (int)row["PorcentajeImpuesto"],
                     Status = (bool)row["Estatus"]
                 };
@@ -525,6 +526,127 @@ namespace Repos.Web.Admin.Data
                 return true;
             else
                 return false;
+        }
+
+        public InventoryViewModel GetInventory()
+        {
+            InventoryViewModel inventoryViewModel = new InventoryViewModel();
+            var query = $"SELECT " + 
+                        "\nI.ID," +
+                        "\nA.ID AS[ArticuloID]," +
+                        "\nA.Referencia," +
+                        "\nA.Descripcion," +
+                        "\nA.Precio," +
+                        "\nA.PorcentajeImpuesto," +
+                        "\nAL.ID AS[AlmacenID]," +
+                        "\nAL.Codigo AS[AlmacenCodigo]," +
+                        "\nAL.Nombre AS[AlmacenNombre]," +
+                        "\nAL.SucursalID," +
+                        "\nS.Codigo AS[SucursalCodigo]," +
+                        "\nISNULL(I.Disponible, 0) AS[Disponible]," +
+                        "\nISNULL(I.Reservado, 0) AS[Reservado]," +
+                        "\nISNULL(I.Estatus,0) AS [Estatus]" +
+                        "\nFROM Articulo AS A" +
+                        "\nFULL OUTER JOIN Almacen AS AL ON 1 = 1" +
+                        "\nLEFT OUTER JOIN Inventario AS I ON A.ID = I.ArticuloID AND AL.ID = I.AlmacenID" +
+                        "\nINNER JOIN Sucursal AS S ON AL.SucursalID = S.ID" +
+                        "\nWHERE" +
+                        "\nA.Estatus = 1 AND" +
+                        "\nS.Estatus = 1 AND" +
+                        "\nAL.Estatus = 1" +
+                        "\nORDER BY" +
+                        "\nS.Nombre ASC,"+
+                        "\nAL.Nombre ASC";
+
+            foreach (DataRow row in _db.GetData(query, autoConnect: true).Rows)
+                inventoryViewModel.Inventory.Add(new Inventory()
+                {
+                    Id = row["ID"] == DBNull.Value ? default : (Guid)row["ID"],
+                    Warehouse = new Warehouse()
+                    {
+                        Id = (Guid)row["AlmacenID"],
+                        Code = (string)row["AlmacenCodigo"],
+                        Name = (string)row["AlmacenNombre"],
+                    },
+                    Stock = (int)row["Disponible"],
+                    Reserved = (int)row["Reservado"],
+                    Item = new Item()
+                    {
+                        Id = (Guid)row["ArticuloID"],
+                        Code = (string)row["Referencia"],
+                        Description = AddPossibleNullString(row, "Descripcion"),
+                        Price = (decimal)row["Precio"],
+                        TaxPercentaje = (int)row["PorcentajeImpuesto"]
+                    },
+                    Status = (bool)row["Estatus"]
+                });
+
+            return inventoryViewModel;
+        }
+
+        public bool EditInventory(Inventory inventory)
+        {
+            var query = $"DECLARE @ArticuloID AS UNIQUEIDENTIFIER = '{inventory.Item.Id}'" +
+                         $"\nDECLARE @AlmacenID AS UNIQUEIDENTIFIER = '{inventory.Warehouse.Id}'"+
+                         $"\nDECLARE @Disponible AS INT = {inventory.Stock}" +
+                         $"\nDECLARE @Reservado AS INT = {inventory.Reserved}" +
+                         "\nIF EXISTS(SELECT 1 FROM Inventario WHERE ArticuloID = @ArticuloID AND AlmacenID = @AlmacenID)" +
+                         "\nBEGIN" +
+                         "\n    UPDATE Inventario SET Disponible = @Disponible, Reservado = @Reservado WHERE ArticuloID = @ArticuloID AND AlmacenID = @AlmacenID" +
+                         "\nEND" +
+                         "\nELSE" +
+                         "\nBEGIN" +
+                         "\n    INSERT INTO Inventario(AlmacenID, Disponible, Reservado, ArticuloID)" +
+                         "\n" +
+                         "\n    VALUES(@AlmacenID, ISNULL(@Disponible, 0), ISNULL(@Reservado, 0), @ArticuloID)" +
+                         "\nEND";
+
+            if (_db.SetConnection() && _db.WriteData(query))
+                return true;
+            else
+                return false;
+        }
+
+        public Item GetItemByCode(string code, bool justActive = false)
+        {
+            Item item = new Item();
+            var query = $"SELECT * FROM Articulo WHERE Referencia = '{code}'";
+            if (justActive)
+                query += $" WHERE Estatus = 1";
+
+            foreach (DataRow row in _db.GetData(query, autoConnect: true).Rows)
+            {
+                item.Id = (Guid)row["ID"];
+                item.CreateDate = (DateTime)row["FechaRegistro"];
+                item.Code = (string)row["Referencia"];
+                item.Description = AddPossibleNullString(row, "Descripcion");
+                item.Price = (decimal)row["Precio"];
+                item.TaxPercentaje = (int)row["PorcentajeImpuesto"];
+                item.Status = (bool)row["Estatus"];
+            }
+            return item;
+        }
+
+        public Warehouse GetWarehouseByCode(string code, bool justActive = false)
+        {
+            Warehouse warehouse = null;
+            var query = $"SELECT * FROM Almacen WHERE Codigo = '{code}'";
+            if (justActive)
+                query += $" WHERE Estatus = 1";
+
+            foreach (DataRow row in _db.GetData(query, autoConnect: true).Rows)
+                warehouse = new Warehouse()
+                {
+                    Id = (Guid)row["ID"],
+                    CreateDate = (DateTime)row["FechaRegistro"],
+                    Store = GetStoreById((Guid)row["SucursalID"]),
+                    Code = AddPossibleNullString(row, "Codigo"),
+                    Name = AddPossibleNullString(row, "Nombre"),
+                    Status = (bool)row["Estatus"],
+                    Address = AddPossibleNullString(row, "Direccion")
+                };
+
+            return warehouse;
         }
     }
 }

@@ -1,0 +1,52 @@
+﻿@using Repos.Web.Admin.ViewModels
+@model InventoryViewModel
+@{
+    ViewData["Title"] = "Inventory";
+}
+
+<div>
+    <div>
+        <h1>Artículos</h1>
+        <div>
+            <a asp-action="NewInventory"><img class="add-link-icon"/>Nuevo inventario</a>
+        </div>
+        <div>
+            @if (Model != null && Model.Inventory.Count > 0)
+            {
+                <table>
+                    <thead>
+                        <tr>@Html.DisplayNameFor(model => model.Inventory[0].Warehouse.Store.Name)</tr>
+                        <tr>@Html.DisplayNameFor(model => model.Inventory[0].Warehouse.Name)</tr>
+                        <tr>@Html.DisplayNameFor(model => model.Inventory[0].Item.Code)</tr>
+                        <tr>@Html.DisplayNameFor(model => model.Inventory[0].Item.Description)</tr>
+                        <tr>@Html.DisplayNameFor(model => model.Inventory[0].Stock)</tr>
+                        <tr>@Html.DisplayNameFor(model => model.Inventory[0].Reserved)</tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in Model.Inventory)
+                        {
+                        <tr>
+                            <td>@Html.DisplayFor(i => item.Warehouse.Store.Name)</td>
+                            <td>@Html.DisplayFor(i => item.Warehouse.Name)</td>
+                            <td>@Html.DisplayFor(i => item.Item.Code)</td>
+                            <td>@Html.DisplayFor(i => item.Item.Description)</td>
+                            <td>@Html.DisplayFor(i => item.Stock)</td>
+                            <td>@Html.DisplayFor(i => item.Reserved)</td>
+                            <td>
+                                @if (item.Id != default || item.Id == default)
+                                {
+                                    <a asp-action="EditInventory" 
+                                       asp-route-itemId="@item.Item.Id"
+                                       asp-route-warehouseId="@item.Warehouse.Id"
+                                       asp-route-inventoryId="@item.Id"
+                                       >Editar</a>
+                                }
+                            </td>
+                        </tr>
+                        }
+                    </tbody>
+                </table>
+            }
+        </div>
+    </div>
+</div>

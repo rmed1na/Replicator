@@ -1,11 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Repos.Web.Admin.Data;
 using Repos.Web.Admin.Models;
+using Repos.Web.Admin.ViewModels;
 
 namespace Repos.Web.Admin.Controllers
 {
@@ -66,6 +68,30 @@ namespace Repos.Web.Admin.Controllers
         {
             _repo.DeleteItem(item);
             return RedirectToAction(nameof(Index));
+        }
+
+        public IActionResult GetInventory()
+        {
+            return View(_repo.GetInventory());
+        }
+
+        public IActionResult EditInventory(Guid itemId, Guid warehouseId, Guid inventoryId)
+        {
+            Inventory inventory = new Inventory();
+            inventory.Id = inventoryId;
+            inventory.Item = _repo.GetItemById(itemId);
+            inventory.Warehouse = _repo.GetWarehouseById(warehouseId);
+
+            return View(inventory);
+        }
+
+        [HttpPost]
+        public IActionResult EditInventory(Inventory inventory)
+        {
+            inventory.Warehouse = _repo.GetWarehouseByCode(inventory.Warehouse.Code);
+            inventory.Item = _repo.GetItemByCode(inventory.Item.Code);
+            _repo.EditInventory(inventory);
+            return RedirectToAction(nameof(GetInventory));
         }
     }
 }

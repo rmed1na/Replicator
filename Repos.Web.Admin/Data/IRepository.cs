@@ -36,5 +36,9 @@ namespace Repos.Web.Admin.Data
         Item GetItemById(Guid Id);
         bool EditItem(Item item);
         bool DeleteItem(Item item);
+        InventoryViewModel GetInventory();
+        bool EditInventory(Inventory inventory);
+        Item GetItemByCode(string code, bool justActive = false);
+        Warehouse GetWarehouseByCode(string code, bool justActive = false);
     }
 }

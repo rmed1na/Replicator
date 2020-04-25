@@ -1,0 +1,28 @@
+﻿@model Inventory
+@{
+    ViewData["Title"] = "EditInventory";
+}
+
+<h1>Edición de inventario</h1>
+<h3>Artículo: @Model.Item.Code (@Model.Item.Description)</h3><br />
+<h3>Almacén: @Model.Warehouse.Code (@Model.Warehouse.Name) </h3><br />
+
+<div>
+    <form asp-action="EditInventory">
+        <input type="hidden" asp-for="Id" />
+
+        <label asp-for="Item.Code"></label>
+        <input type="text" asp-for="Item.Code" />
+        <span asp-validation-for="Item.Code"></span>
+
+        <label asp-for="Warehouse.Code"></label>
+        <input type="text" asp-for="Warehouse.Code" />
+        <span asp-validation-for="Warehouse.Code"></span>
+
+        <label asp-for="Stock"></label>
+        <input type="number" asp-for="Stock" />
+        <span asp-validation-for="Stock"></span>
+
+        <input type="submit" value="Guardar"/>
+    </form>
+</div>
