@@ -17,19 +17,18 @@
             <table>
                 <thead>
                     <tr>
-                        <th>@Html.DisplayNameFor(model => model.Items[0].Id)</th>
                         <th>@Html.DisplayNameFor(model => model.Items[0].Code)</th>
                         <th>@Html.DisplayNameFor(model => model.Items[0].Description)</th>
                         <th>@Html.DisplayNameFor(model => model.Items[0].Price)</th>
                         <th>@Html.DisplayNameFor(model => model.Items[0].TaxPercentaje)</th>
                         <th>@Html.DisplayNameFor(model => model.Items[0].Status)</th>
+                        <th></th>
                     </tr>
                 </thead>
                 <tbody>
                     @foreach (var item in Model.Items)
                     {
                     <tr>
-                        <td>@Html.DisplayFor(i => item.Id)</td>
                         <td>@Html.DisplayFor(i => item.Code)</td>
                         <td>@Html.DisplayFor(i => item.Description)</td>
                         <td>@Html.DisplayFor(i => item.Price)</td>

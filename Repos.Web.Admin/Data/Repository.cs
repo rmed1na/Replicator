@@ -196,10 +196,7 @@ namespace Repos.Web.Admin.Data
                     Name = AddPossibleNullString(row, "Nombre"),
                     Address = AddPossibleNullString(row, "Direccion"),
                     Status = (bool)row["Estatus"],
-                    Company = new Company
-                    {
-                        Id = (Guid)row["EmpresaID"]
-                    }
+                    Company = GetCompanyById((Guid)row["EmpresaID"])
                 });
             }
             return storeViewModel;
@@ -235,10 +232,7 @@ namespace Repos.Web.Admin.Data
                 store.CreateDate = (DateTime)row["FechaRegistro"];
                 store.Address = AddPossibleNullString(row, "Direccion");
                 store.Status = (bool)row["Estatus"];
-                store.Company = new Company()
-                {
-                    Id = (Guid)row["EmpresaID"]
-                };
+                store.Company = GetCompanyById((Guid)row["EmpresaID"]);
             }
             return (store);
         }
@@ -305,10 +299,7 @@ namespace Repos.Web.Admin.Data
                     Code = (string)row["Codigo"],
                     Name = (string)row["Nombre"],
                     Status = (bool)row["Estatus"],
-                    Store = new Store()
-                    {
-                        Id = (Guid)row["SucursalID"]
-                    }
+                    Store = GetStoreById((Guid)row["SucursalID"])
                 });
             }
             return warehouseViewModel;
@@ -395,10 +386,7 @@ namespace Repos.Web.Admin.Data
                     Status = (bool)row["Estatus"],
                     Ip = AddPossibleNullString(row, "Ip"),
                     Hostname = AddPossibleNullString(row, "Hostname"),
-                    Warehouse = new Warehouse()
-                    {
-                        Id = (Guid)row["AlmacenID"]
-                    }
+                    Warehouse = GetWarehouseById((Guid)row["AlmacenID"])
                 });
             }
             return posViewModel;
@@ -567,6 +555,7 @@ namespace Repos.Web.Admin.Data
                         Id = (Guid)row["AlmacenID"],
                         Code = (string)row["AlmacenCodigo"],
                         Name = (string)row["AlmacenNombre"],
+                        Store = GetStoreById((Guid)row["SucursalID"])
                     },
                     Stock = (int)row["Disponible"],
                     Reserved = (int)row["Reservado"],

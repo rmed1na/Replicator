@@ -32,14 +32,7 @@
                         <td>@company.CreateDate</td>
                         <td>@company.Code</td>
                         <td>@company.Name</td>
-                        @if (company.Status)
-                        {
-                            <td class="td-green">Activo</td>
-                        }
-                        else
-                        {
-                            <td class="td-red">Inactivo</td>
-                        }
+                        <td>@Html.DisplayFor(i => company.Status)</td>
                         <td>
                             <a class="edit-link" asp-controller="Company" asp-action="Edit" asp-route-id="@company.Id"><img src="~/content/images/pencil.png" /></a>
                         </td>

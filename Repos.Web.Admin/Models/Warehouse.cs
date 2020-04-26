@@ -20,7 +20,7 @@ namespace Repos.Web.Admin.Models
         [Display(Name="Código de almacén")]
         public string Code { get; set; }
 
-        [Display(Name="Nombre")]
+        [Display(Name="Nombre de almacén")]
         public string Name { get; set; }
 
         [Display(Name="Estatus")]

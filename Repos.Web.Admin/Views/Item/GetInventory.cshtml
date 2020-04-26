@@ -6,10 +6,7 @@
 
 <div>
     <div>
-        <h1>Artículos</h1>
-        @*<div>
-            <a asp-action="NewInventory"><img class="add-link-icon"/>Nuevo inventario</a>
-        </div>*@
+        <h1>Inventario</h1>
         <div>
             @if (Model != null && Model.Inventory.Count > 0)
             {
@@ -22,6 +19,7 @@
                             <th>@Html.DisplayNameFor(model => model.Inventory[0].Item.Description)</th>
                             <th>@Html.DisplayNameFor(model => model.Inventory[0].Stock)</th>
                             <th>@Html.DisplayNameFor(model => model.Inventory[0].Reserved)</th>
+                            <th></th>
                         </tr>
                     </thead>
                     <tbody>
