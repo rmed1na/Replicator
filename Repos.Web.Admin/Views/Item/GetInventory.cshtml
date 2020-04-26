@@ -15,12 +15,14 @@
             {
                 <table>
                     <thead>
-                        <tr>@Html.DisplayNameFor(model => model.Inventory[0].Warehouse.Store.Name)</tr>
-                        <tr>@Html.DisplayNameFor(model => model.Inventory[0].Warehouse.Name)</tr>
-                        <tr>@Html.DisplayNameFor(model => model.Inventory[0].Item.Code)</tr>
-                        <tr>@Html.DisplayNameFor(model => model.Inventory[0].Item.Description)</tr>
-                        <tr>@Html.DisplayNameFor(model => model.Inventory[0].Stock)</tr>
-                        <tr>@Html.DisplayNameFor(model => model.Inventory[0].Reserved)</tr>
+                        <tr>
+                            <th>@Html.DisplayNameFor(model => model.Inventory[0].Warehouse.Store.Name)</th>
+                            <th>@Html.DisplayNameFor(model => model.Inventory[0].Warehouse.Name)</th>
+                            <th>@Html.DisplayNameFor(model => model.Inventory[0].Item.Code)</th>
+                            <th>@Html.DisplayNameFor(model => model.Inventory[0].Item.Description)</th>
+                            <th>@Html.DisplayNameFor(model => model.Inventory[0].Stock)</th>
+                            <th>@Html.DisplayNameFor(model => model.Inventory[0].Reserved)</th>
+                        </tr>
                     </thead>
                     <tbody>
                         @foreach (var item in Model.Inventory)
