@@ -6,6 +6,7 @@
 h1 {
     font-size: 50px;
     font-weight: 400;
+    margin-bottom: 10px;
 }
 
 h2 {
@@ -40,6 +41,11 @@ input {
     border-radius: 7px;
 }
 
+    input[type=checkbox] {
+        width: 27px;
+        height: 27px;
+    }
+
 table, th, td {
     border-collapse: collapse;
     text-align: center;
@@ -48,7 +54,7 @@ table, th, td {
 }
 
 table {
-    width: 80%;
+    width: 100%;
     margin: 10px auto;
 }
 
@@ -111,31 +117,31 @@ a:visited {
     }
 
 .edit-link img {
-    height: 17px;
+    height: 24px;
     vertical-align: middle;
 }
 
 .delete-link img {
-    height: 17px;
+    height: 22px;
     vertical-align: middle;
 }
 
 .button-left-container {
-    width: 100%;
-    margin: 50px auto;
-    text-align: center;
+    float: right;
+    margin: 55px 0 50px 0;
+    text-align: left;
 }
 
 .button-left-container a {
     font-size: 20px;
-    background-color: #262626;
-    color: white;
+    color: #262626;
+    border: 1px solid #262626;
     border-radius: 7px;
     padding: 10px 20px;
 }
 
 .add-link-icon {
-    height: 15px;
+    height: 18px;
     vertical-align: middle;
     margin-right: 10px;
 }
@@ -146,4 +152,8 @@ a:visited {
 
 .td-red {
     color: #c0392b;
+}
+
+.h1-subpage-title {
+    float: left
 }

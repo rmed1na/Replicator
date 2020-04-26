@@ -8,7 +8,7 @@
     <div>
         <h1>Sucursales</h1>
         <div class="button-left-container">
-            <a asp-controller="Store" asp-action="Create"><img class="add-link-icon" src="~/content/images/plus.png" />Nueva sucursal</a>
+            <a asp-controller="Store" asp-action="Create"><img class="add-link-icon" src="~/content/images/add.png" />Nueva sucursal</a>
         </div>
     </div>
     <div>
@@ -23,6 +23,7 @@
                         <th>@Html.DisplayNameFor(model => model.Stores[0].Address)</th>
                         <th>@Html.DisplayNameFor(model => model.Stores[0].Status)</th>
                         <th></th>
+                        <th></th>
                     </tr>
                 </thead>
                 <tbody>
@@ -35,8 +36,10 @@
                             <td>@Html.DisplayFor(i => item.Address)</td>
                             <td>@Html.DisplayFor(i => item.Status)</td>
                             <td>
-                                <a asp-action="Edit" asp-route-id="@item.Id">Editar</a>
-                                <a asp-action="Delete" asp-route-id="@item.Id">Borrar</a>
+                                <a class="edit-link" asp-action="Edit" asp-route-id="@item.Id" title="Editar"><img src="~/content/images/pen.png"/></a>
+                            </td>
+                            <td>
+                                <a class="delete-link" asp-action="Delete" asp-route-id="@item.Id" title="Eliminar"><img src="~/content/images/cancel.png" /></a>
                             </td>
                         </tr>
                     }

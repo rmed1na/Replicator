@@ -8,7 +8,7 @@
     <div>
         <h1>Empresas</h1>
         <div class="button-left-container">
-            <a asp-controller="Company" asp-action="Create"><img class="add-link-icon" src="~/content/images/plus.png"/>Nueva empresa</a>
+            <a asp-controller="Company" asp-action="Create"><img class="add-link-icon" src="~/content/images/add.png"/>Nueva empresa</a>
         </div>
     </div>
     <div>
@@ -16,7 +16,7 @@
             <thead>
                 <tr>
                     <th>Id</th>
-                    <th>Creación</th>
+                    <th>Fecha de Creación</th>
                     <th>Código</th>
                     <th>Nombre</th>
                     <th>Estatus</th>
@@ -34,10 +34,10 @@
                         <td>@company.Name</td>
                         <td>@Html.DisplayFor(i => company.Status)</td>
                         <td>
-                            <a class="edit-link" asp-controller="Company" asp-action="Edit" asp-route-id="@company.Id"><img src="~/content/images/pencil.png" /></a>
+                            <a class="edit-link" asp-controller="Company" asp-action="Edit" asp-route-id="@company.Id" title="Editar"><img src="~/content/images/pen.png" /></a>
                         </td>
                         <td>
-                            <a class="delete-link" asp-controller="Company" asp-action="Delete" asp-route-id="@company.Id"><img src="~/content/images/cross.png" /></a>
+                            <a class="delete-link" asp-controller="Company" asp-action="Delete" asp-route-id="@company.Id" title="Eliminar"><img src="~/content/images/cancel.png" /></a>
                         </td>
                     </tr>
                 }

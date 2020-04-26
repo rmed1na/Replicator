@@ -11,16 +11,16 @@
     <form asp-action="EditInventory">
         <input type="hidden" asp-for="Id" />
 
-        <label asp-for="Item.Code"></label>
-        <input type="text" asp-for="Item.Code" />
+        <label asp-for="Item.Code"></label><br />
+        <input type="text" asp-for="Item.Code" /><br />
         <span asp-validation-for="Item.Code"></span>
 
-        <label asp-for="Warehouse.Code"></label>
-        <input type="text" asp-for="Warehouse.Code" />
+        <label asp-for="Warehouse.Code"></label><br />
+        <input type="text" asp-for="Warehouse.Code" /><br />
         <span asp-validation-for="Warehouse.Code"></span>
 
-        <label asp-for="Stock"></label>
-        <input type="number" asp-for="Stock" />
+        <label asp-for="Stock"></label><br />
+        <input type="number" asp-for="Stock" /><br />
         <span asp-validation-for="Stock"></span>
 
         <input type="submit" value="Guardar"/>

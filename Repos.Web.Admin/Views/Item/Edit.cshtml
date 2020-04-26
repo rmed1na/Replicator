@@ -8,24 +8,24 @@
     <form asp-action="Edit">
         <input type="hidden" asp-for="Id"/>
 
-        <label asp-for="Code"></label>
-        <input type="text" asp-for="Code"/>
+        <label asp-for="Code"></label><br />
+        <input type="text" asp-for="Code"/><br />
         <span asp-validation-for="Code"></span>
 
-        <label asp-for="Description"></label>
-        <input type="text" asp-for="Description"/>
+        <label asp-for="Description"></label><br />
+        <input type="text" asp-for="Description"/><br />
         <span asp-validation-for="Description"></span>
 
-        <label asp-for="Price"></label>
-        <input type="number" asp-for="Price" step="0.01"/>
+        <label asp-for="Price"></label><br />
+        <input type="number" asp-for="Price" step="0.01"/><br />
         <span asp-validation-for="Price"></span>
 
-        <label asp-for="TaxPercentaje"></label>
-        <input type="number" asp-for="TaxPercentaje"/>
+        <label asp-for="TaxPercentaje"></label><br />
+        <input type="number" asp-for="TaxPercentaje"/><br />
         <span asp-validation-for="TaxPercentaje"></span>
 
-        <label asp-for="Status"></label>
-        <input type="checkbox" asp-for="Status"/>
+        <label asp-for="Status"></label><br />
+        <input type="checkbox" asp-for="Status"/><br />
         <span asp-validation-for="Status"></span>
 
         <input type="submit" value="Guardar"/>

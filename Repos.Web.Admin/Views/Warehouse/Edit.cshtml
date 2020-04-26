@@ -8,23 +8,24 @@
     <form asp-action="Edit">
         <input type="hidden" asp-for="Id" />
 
-        <label asp-for="Code"></label>
-        <input type="Text" asp-for="Code" />
+        <label asp-for="Code"></label><br />
+        <input type="Text" asp-for="Code" /><br />
         <span asp-validation-for="Code"></span>
 
-        <label asp-for="Name"></label>
-        <input type="Text" asp-for="Name" />
+        <label asp-for="Name"></label><br />
+        <input type="Text" asp-for="Name" /><br />
         <span asp-validation-for="Name"></span>
 
-        <label asp-for="Address"></label>
-        <input type="Text" asp-for="Address" />
+        <label asp-for="Address"></label><br />
+        <input type="Text" asp-for="Address" /><br />
         <span asp-validation-for="Address"></span>
 
-        <label asp-for="Store.Code"></label>
-        <input type="text" asp-for="Store.Code"/>
+        <label asp-for="Store.Code"></label><br />
+        <input type="text" asp-for="Store.Code"/><br />
+        <span asp-validation-for="Store.Code"></span>
 
-        <label asp-for="Status"></label>
-        <input type="checkbox" asp-for="Status" />
+        <label asp-for="Status"></label><br />
+        <input type="checkbox" asp-for="Status" /><br />
         <span asp-validation-for="Status"></span>
 
         <input type="submit" value="Guardar"/>

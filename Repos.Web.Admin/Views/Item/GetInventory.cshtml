@@ -35,11 +35,12 @@
                             <td>
                                 @if (item.Id != default || item.Id == default)
                                 {
-                                    <a asp-action="EditInventory" 
+                                    <a class="edit-link"
+                                       asp-action="EditInventory" 
                                        asp-route-itemId="@item.Item.Id"
                                        asp-route-warehouseId="@item.Warehouse.Id"
                                        asp-route-inventoryId="@item.Id"
-                                       >Editar</a>
+                                       ><img src="~/content/images/pen.png"/></a>
                                 }
                             </td>
                         </tr>
