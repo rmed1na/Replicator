@@ -3,14 +3,14 @@
     ViewData["Title"] = "Login";
 }
 
-<div>
+<div class="login-container">
     <h2>Inicio de sesión</h2>
     <form asp-controller="Account" asp-action="Login" method="post">
         <input type="text" asp-for="Username" placeholder="Usuario" required/>
         <br />
         <input type="password" asp-for="Password" placeholder="Contraseña" required/>
         <br />
-        <input type="submit" value="Entrar"/>
+        <input class="submit-button" type="submit" value="Entrar"/>
         <br />
         <br />
     </form>

@@ -157,3 +157,20 @@ a:visited {
 .h1-subpage-title {
     float: left
 }
+
+.login-container {
+    text-align: center;
+}
+
+.login-container input {
+    margin: 3px 3px;
+}
+
+.login-container input[type=submit] {
+    margin: 30px 30px;
+}
+
+.submit-button {
+    background-color: #333333;
+    color: white;
+}
