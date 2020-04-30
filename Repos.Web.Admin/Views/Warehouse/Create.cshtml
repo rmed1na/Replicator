@@ -5,23 +5,23 @@
 
 <div>
     <div>
-        <h1>Registra un nuevo almacén</h1>
+        <h2>Registra un nuevo almacén</h2>
     </div>
     <div>
         <form asp-action="Create">
-            <label asp-for="Code"></label>
-            <input type="text" asp-for="Code" placeholder="Código" required/>
+            <label asp-for="Code"></label><br />
+            <input type="text" asp-for="Code" placeholder="Código" required/><br />
             <span asp-validation-for="Code"></span>
 
-            <label asp-for="Name"></label>
-            <input type="text" asp-for="Name" placeholder="Nombre" required/>
-            <span asp-validation-for="Name"></span>
+            <label asp-for="Name"></label><br />
+            <input type="text" asp-for="Name" placeholder="Nombre" required/><br />
+            <span asp-validation-for="Name"></span><br />
 
-            <label asp-for="Store.Code"></label>
-            <input type="text" asp-for="Store.Code" placeholder="Código de tienda" required/>
+            <label asp-for="Store.Code"></label><br />
+            <input type="text" asp-for="Store.Code" placeholder="Código de tienda" required/><br />
             <span asp-validation-for="Store.Code"></span>
 
-            <input type="submit" value="Guardar"/>
+            <input class="submit-button" type="submit" value="Guardar"/>
         </form>
     </div>
 </div>

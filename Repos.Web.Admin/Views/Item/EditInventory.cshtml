@@ -3,10 +3,11 @@
     ViewData["Title"] = "EditInventory";
 }
 
-<h1>Edición de inventario</h1>
-<h3>Artículo: @Model.Item.Code (@Model.Item.Description)</h3><br />
-<h3>Almacén: @Model.Warehouse.Code (@Model.Warehouse.Name) </h3><br />
-
+<h2>Edición de inventario</h2>
+@*<h3>Artículo: @Model.Item.Code (@Model.Item.Description)</h3><br />
+<h3>Almacén: @Model.Warehouse.Code (@Model.Warehouse.Name) </h3><br />*@
+<label>Artículo: @Model.Item.Code (@Model.Item.Description)</label><br />
+<label>Almacén: @Model.Warehouse.Code (@Model.Warehouse.Name)</label><br />
 <div>
     <form asp-action="EditInventory">
         <input type="hidden" asp-for="Id" />
@@ -23,6 +24,6 @@
         <input type="number" asp-for="Stock" /><br />
         <span asp-validation-for="Stock"></span>
 
-        <input type="submit" value="Guardar"/>
+        <input class="submit-button" type="submit" value="Guardar"/>
     </form>
 </div>

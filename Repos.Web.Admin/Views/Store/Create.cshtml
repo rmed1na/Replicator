@@ -5,27 +5,27 @@
 
 <div>
     <div>
-        <h1>Registra una nueva sucursal</h1>
+        <h2>Registra una nueva sucursal</h2>
     </div>
     <div>
         <form asp-action="Create">
-            <label asp-for="Code"></label>
-            <input type="text" asp-for="Code" placeholder="Código" required/>
+            <label asp-for="Code"></label><br />
+            <input type="text" asp-for="Code" placeholder="Código" required/><br />
             <span asp-validation-for="Code"></span>
 
-            <label asp-for="Name"></label>
-            <input type="text" asp-for="Name" placeholder="Nombre" required/>
+            <label asp-for="Name"></label><br />
+            <input type="text" asp-for="Name" placeholder="Nombre" required/><br />
             <span asp-validation-for="Name"></span>
 
-            <label asp-for="Address"></label>
-            <input type="text" asp-for="Address" placeholder="Dirección"/>
+            <label asp-for="Address"></label><br />
+            <input class="long-textbox" type="text" asp-for="Address" placeholder="Dirección"/><br />
             <span asp-validation-for="Address"></span>
 
-            <label asp-for="Company.Code"></label>
-            <input type="text" asp-for="Company.Code" placeholder="Código de empresa"/>
+            <label asp-for="Company.Code"></label><br />
+            <input type="text" asp-for="Company.Code" placeholder="Código de empresa"/><br />
             <span asp-validation-for="Company.Code"></span>
 
-            <input type="submit" value="Guardar"/>
+            <input class="submit-button" type="submit" value="Guardar"/><br />
         </form>
     </div>
 </div>

@@ -4,7 +4,7 @@
     ViewData["Title"] = "Edit";
 }
 
-<h1>Edición de caja @Model.Name</h1>
+<h2>Edición de caja @Model.Name</h2>
 <div>
     <form asp-action="Edit">
         <input type="hidden" asp-for="Id"/>
@@ -25,6 +25,6 @@
         <input type="text" asp-for="Warehouse.Code"/><br />
         <span asp-validation-for="Warehouse.Code"></span>
 
-        <input type="submit" value="Guardar"/>
+        <input class="submit-button" type="submit" value="Guardar"/>
     </form>
 </div>

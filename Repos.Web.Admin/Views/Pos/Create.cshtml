@@ -9,19 +9,19 @@
     </div>
     <div>
         <form asp-action="Create">
-            <label asp-for="Code"></label>
-            <input asp-for="Code" placeholder="Código" required />
+            <label asp-for="Code"></label><br />
+            <input asp-for="Code" placeholder="Código" required /><br />
             <span asp-validation-for="Code"></span>
 
-            <label asp-for="Name"></label>
-            <input asp-for="Name" placeholder="Nombre" required />
+            <label asp-for="Name"></label><br />
+            <input asp-for="Name" placeholder="Nombre" required /><br />
             <span asp-validation-for="Name"></span>
 
-            <label asp-for="Warehouse.Code"></label>
-            <input asp-for="Warehouse.Code" placeholder="Código de almacén" required />
+            <label asp-for="Warehouse.Code"></label><br />
+            <input asp-for="Warehouse.Code" placeholder="Código de almacén" required /><br />
             <span asp-validation-for="Warehouse.Code"></span>
 
-            <input type="submit" value="Guardar" />
+            <input class="submit-button" type="submit" value="Guardar" />
         </form>
     </div>
 </div>

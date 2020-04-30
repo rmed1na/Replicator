@@ -3,7 +3,7 @@
     ViewData["Title"] = "Edit";
 }
 
-<h1>Edición de sucursal @Model.Name</h1>
+<h2>Edición de sucursal @Model.Name</h2>
 <div>
     <form asp-action="Edit">
         <input type="hidden" asp-for="Id" />
@@ -17,14 +17,14 @@
         <span asp-validation-for="Name"></span>
 
         <label asp-for="Address"></label><br />
-        <input type="text" asp-for="Address" /><br />
+        <input class="long-textbox" type="text" asp-for="Address" /><br />
         <span asp-validation-for="Name"></span>
 
         <label asp-for="Status"></label><br />
         <input type="checkbox" asp-for="Status"/><br />
         <span asp-validation-for="Status"></span>
 
-        <input type="submit" value="Guardar" />
+        <input class="submit-button" type="submit" value="Guardar" />
     </form>
 </div>
 

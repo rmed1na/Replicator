@@ -3,7 +3,7 @@
     ViewData["Title"] = "Edit";
 }
 
-<h1>Edición de artículo @Model.Code</h1>
+<h2>Edición de artículo @Model.Code</h2>
 <div>
     <form asp-action="Edit">
         <input type="hidden" asp-for="Id"/>
@@ -28,6 +28,6 @@
         <input type="checkbox" asp-for="Status"/><br />
         <span asp-validation-for="Status"></span>
 
-        <input type="submit" value="Guardar"/>
+        <input class="submit-button" type="submit" value="Guardar"/>
     </form>
 </div>

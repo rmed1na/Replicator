@@ -5,31 +5,31 @@
 
 <div>
     <div>
-        <h1>Registra un nuevo artículo</h1>
+        <h2>Registra un nuevo artículo</h2>
     </div>
     <div>
         <form asp-action="Create">
-            <label asp-for="Code"></label>
-            <input type="text" asp-for="Code"/>
+            <label asp-for="Code"></label><br />
+            <input type="text" asp-for="Code"/><br />
             <span asp-validation-for="Code"></span>
 
-            <label asp-for="Description"></label>
-            <input type="text" asp-for="Description"/>
+            <label asp-for="Description"></label><br />
+            <input type="text" asp-for="Description"/><br />
             <span asp-validation-for="Description"></span>
 
-            <label asp-for="Price"></label>
-            <input type="number"asp-for="Price" step="0.01"/>
+            <label asp-for="Price"></label><br />
+            <input type="number"asp-for="Price" step="0.01"/><br />
             <span asp-validation-for="Price"></span>
 
-            <label asp-for="TaxPercentaje"></label>
-            <input type="number" asp-for="TaxPercentaje" max="100" min="1"/> %
+            <label asp-for="TaxPercentaje"></label><br />
+            <input type="number" asp-for="TaxPercentaje" max="100" min="1"/> % <br />
             <span asp-validation-for="TaxPercentaje"></span>
 
-            <label asp-for="Status"></label>
-            <input type="checkbox" asp-for="Status"/>
+            <label asp-for="Status"></label><br />
+            <input type="checkbox" asp-for="Status"/><br />
             <span asp-validation-for="Status"></span>
 
-            <input type="submit" value="Guardar"/>
+            <input class="submit-button" type="submit" value="Guardar"/>
         </form>
     </div>
 </div>
