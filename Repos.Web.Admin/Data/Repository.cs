@@ -637,5 +637,24 @@ namespace Repos.Web.Admin.Data
 
             return warehouse;
         }
+
+        public Inventory GetInventoryById(Guid Id)
+        {
+            var query = $"SELECT * FROM Inventario WHERE ID = '{Id}'";
+            Inventory inventory = null;
+
+            foreach (DataRow row in _db.GetData(query, autoConnect: true).Rows)
+                inventory = new Inventory()
+                {
+                    Id = (Guid)row["ID"],
+                    Warehouse = GetWarehouseById((Guid)row["AlmacenID"]),
+                    Stock = (int)row["Disponible"],
+                    Reserved = (int)row["Reservado"],
+                    Item = GetItemById((Guid)row["ArticuloID"]),
+                    Status = (bool)row["Estatus"]
+                };
+
+            return inventory;
+        }
     }
 }

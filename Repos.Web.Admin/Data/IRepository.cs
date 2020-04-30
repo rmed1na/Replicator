@@ -40,5 +40,6 @@ namespace Repos.Web.Admin.Data
         bool EditInventory(Inventory inventory);
         Item GetItemByCode(string code, bool justActive = false);
         Warehouse GetWarehouseByCode(string code, bool justActive = false);
+        Inventory GetInventoryById(Guid Id);
     }
 }

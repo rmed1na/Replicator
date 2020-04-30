@@ -78,9 +78,15 @@ namespace Repos.Web.Admin.Controllers
         public IActionResult EditInventory(Guid itemId, Guid warehouseId, Guid inventoryId)
         {
             Inventory inventory = new Inventory();
-            inventory.Id = inventoryId;
-            inventory.Item = _repo.GetItemById(itemId);
-            inventory.Warehouse = _repo.GetWarehouseById(warehouseId);
+
+            if (inventoryId != default)
+                inventory = _repo.GetInventoryById(inventoryId);
+            else
+            {
+                inventory.Id = inventoryId;
+                inventory.Item = _repo.GetItemById(itemId);
+                inventory.Warehouse = _repo.GetWarehouseById(warehouseId);
+            }
 
             return View(inventory);
         }
