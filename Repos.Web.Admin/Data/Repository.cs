@@ -244,7 +244,7 @@ namespace Repos.Web.Admin.Data
         public bool EditStore(Store store)
         {
             bool success = false;
-            var query = $"UPDATE Sucursal SET Codigo = '{store.Code}', Nombre = '{store.Name}', Direccion = '{store.Address}', Estatus = '{store.Status}'";
+            var query = $"UPDATE Sucursal SET Codigo = '{store.Code}', Nombre = '{store.Name}', Direccion = '{store.Address}', Estatus = '{store.Status}' WHERE ID = '{store.Id}'";
 
             if (_db.SetConnection())
                 if (_db.WriteData(query))
