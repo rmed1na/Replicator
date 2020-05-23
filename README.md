@@ -33,3 +33,4 @@ This console configures a transactional replication schema from scratch on a Lin
   + Distribution database name is set to `distribution` by default
   + New publications will have a default name of "Database Name" + "DB" by default
   
+Pull requests are welcome!
